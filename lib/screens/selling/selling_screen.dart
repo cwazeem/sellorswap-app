@@ -8,6 +8,16 @@ class SellingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            icon: Icon(Icons.chat),
+            onPressed: () {
+              Navigator.pushNamed(context, "/chathome");
+            },
+          )
+        ],
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -15,7 +25,7 @@ class SellingScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   buildItem(context, "Sell some stuff!", "route"),
                   buildItem(context, "Swap my goods", "route"),
@@ -42,8 +52,11 @@ class SellingScreen extends StatelessWidget {
 
 //                      resultCardAlignment: Alignment.bottomCenter,
         );
-        print(
-            "result = ${result.address} : ${result.latLng.toJson().toString()}");
+        if (result != null && result.address != null) {
+          print(
+              "result = ${result.address} : ${result.latLng.toJson().toString()}");
+        }
+
         //Navigator.pushNamed(context, '/mapAddProduct');
       },
       child: SizedBox(
@@ -52,16 +65,27 @@ class SellingScreen extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-              child: Card(
-                child: Placeholder(),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: kPrimaryColor,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Center(
+                  child: Icon(
+                    Icons.local_grocery_store,
+                    size: getUiWidth(50),
+                    color: Colors.white.withOpacity(0.5),
+                  ),
+                ),
               ),
             ),
+            SizedBox(height: getUiHeight(10)),
             Center(
               child: Text(
                 "$item",
                 style: Theme.of(context)
                     .textTheme
-                    .headline6
+                    .subtitle2
                     .copyWith(fontWeight: FontWeight.bold),
               ),
             )

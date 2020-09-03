@@ -20,8 +20,8 @@ class SocialCard extends StatelessWidget {
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: getUiWidth(10)),
         padding: EdgeInsets.all(getUiWidth(12)),
-        height: getUiHeight(40),
-        width: getUiWidth(40),
+        height: getUiHeight(50),
+        width: getUiWidth(50),
         decoration: BoxDecoration(
           color: Color(0xFFF5F6F9),
           shape: BoxShape.circle,

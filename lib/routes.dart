@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sell_or_swap/screens/chat_home/chat_home_screen.dart';
 import 'package:sell_or_swap/screens/map_add_product/map_add_product_screen.dart';
 import 'package:sell_or_swap/screens/selling/selling_screen.dart';
 import 'package:sell_or_swap/screens/signin/signin_screen.dart';
@@ -16,6 +17,8 @@ class RouterGenerator {
         return MaterialPageRoute(builder: (_) => SellingScreen());
       case '/mapAddProduct':
         return MaterialPageRoute(builder: (_) => MapAddProductScreen());
+      case '/chathome':
+        return MaterialPageRoute(builder: (_) => ChatHomeScreen());
       default:
         return MaterialPageRoute(
             builder: (_) =>

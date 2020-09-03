@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sell_or_swap/components/no_account_text.dart';
 import 'package:sell_or_swap/components/social_card.dart';
+import 'package:sell_or_swap/constants.dart';
 import 'package:sell_or_swap/size_config.dart';
 import 'components/signin_form.dart';
 
@@ -25,7 +26,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   Text(
                     "Welcome Back",
                     style: TextStyle(
-                      color: Colors.black,
+                      color: kPrimaryColor,
                       fontSize: getUiWidth(28),
                       fontWeight: FontWeight.bold,
                     ),
@@ -36,7 +37,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                   SizedBox(height: SizeConfig.screenHeight * 0.08),
                   SignInForm(),
-                  SizedBox(height: SizeConfig.screenHeight * 0.08),
+                  SizedBox(height: getUiHeight(20)),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
