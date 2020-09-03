@@ -40,24 +40,24 @@ class SellingScreen extends StatelessWidget {
 
   Widget buildItem(BuildContext context, String item, String route) {
     return GestureDetector(
-      onTap: () async {
-        LocationResult result = await showLocationPicker(
-          context, googleMapApi,
-          initialCenter: LatLng(31.1975844, 29.9598339),
-//                      automaticallyAnimateToCurrentLocation: true,
-//                      mapStylePath: 'assets/mapStyle.json',
-          myLocationButtonEnabled: true,
-          layersButtonEnabled: true,
-          // countries: ['AE', 'NG']
+      onTap: () {
+//         LocationResult result = await showLocationPicker(
+//           context, googleMapApi,
+//           initialCenter: LatLng(31.1975844, 29.9598339),
+// //                      automaticallyAnimateToCurrentLocation: true,
+// //                      mapStylePath: 'assets/mapStyle.json',
+//           myLocationButtonEnabled: true,
+//           layersButtonEnabled: true,
+//           // countries: ['AE', 'NG']
 
-//                      resultCardAlignment: Alignment.bottomCenter,
-        );
-        if (result != null && result.address != null) {
-          print(
-              "result = ${result.address} : ${result.latLng.toJson().toString()}");
-        }
+// //                      resultCardAlignment: Alignment.bottomCenter,
+//         );
+//         if (result != null && result.address != null) {
+//           print(
+//               "result = ${result.address} : ${result.latLng.toJson().toString()}");
+//         }
 
-        //Navigator.pushNamed(context, '/mapAddProduct');
+        Navigator.pushNamed(context, '/sellcategory');
       },
       child: SizedBox(
         width: SizeConfig.screenWidth / 2 - 20,

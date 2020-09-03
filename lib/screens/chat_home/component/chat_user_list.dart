@@ -65,6 +65,9 @@ class ChatUserList extends StatelessWidget {
               ],
             ),
           ),
+          onTap: () {
+            Navigator.pushNamed(context, '/chat', arguments: user[index]);
+          },
         );
       },
       separatorBuilder: (context, index) {

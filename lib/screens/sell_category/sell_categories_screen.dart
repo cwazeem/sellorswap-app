@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:sell_or_swap/bloc/chat_home_bloc.dart';
-import 'package:sell_or_swap/models/user.dart';
+import 'package:sell_or_swap/bloc/categories_bloc.dart';
+import 'package:sell_or_swap/models/category.dart';
 import 'package:sell_or_swap/networking/api_response.dart';
-import 'package:sell_or_swap/screens/chat_home/component/chat_user_list.dart';
 
-class ChatHomeScreen extends StatefulWidget {
+import 'components/category_list.dart';
+
+class SellCategoryScreen extends StatefulWidget {
   @override
-  _ChatHomeScreenState createState() => _ChatHomeScreenState();
+  _SellCategoryScreenState createState() => _SellCategoryScreenState();
 }
 
-class _ChatHomeScreenState extends State<ChatHomeScreen> {
-  ChatHomeBloc _chatHomeBloc;
+class _SellCategoryScreenState extends State<SellCategoryScreen> {
+  CategoriesBloc _categoriesBloc;
   @override
   void initState() {
     super.initState();
-    _chatHomeBloc = ChatHomeBloc();
+    _categoriesBloc = CategoriesBloc();
   }
 
   @override
@@ -22,12 +23,12 @@ class _ChatHomeScreenState extends State<ChatHomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "My Chats",
+          "Categories",
           style: Theme.of(context).textTheme.headline5,
         ),
       ),
-      body: StreamBuilder<Response<List<User>>>(
-        stream: _chatHomeBloc.shopListStream,
+      body: StreamBuilder<Response<List<AppCategory>>>(
+        stream: _categoriesBloc.categoriesListStream,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             switch (snapshot.data.status) {
@@ -38,7 +39,9 @@ class _ChatHomeScreenState extends State<ChatHomeScreen> {
                 return Center(child: Text("Empty"));
                 break;
               case Status.COMPLETED:
-                return ChatUserList(user: snapshot.data.data);
+                return CategoryList(
+                  categories: snapshot.data.data,
+                );
                 break;
               case Status.ERROR:
                 return Center(
@@ -60,7 +63,7 @@ class _ChatHomeScreenState extends State<ChatHomeScreen> {
 
   @override
   void dispose() {
-    _chatHomeBloc.dispose();
+    _categoriesBloc.dispose();
     super.dispose();
   }
 }
