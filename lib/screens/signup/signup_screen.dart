@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sell_or_swap/components/default_button.dart';
 import 'package:sell_or_swap/components/have_account_text.dart';
+import 'package:sell_or_swap/constants.dart';
 import 'package:sell_or_swap/size_config.dart';
 import 'components/signup_form.dart';
 
@@ -30,7 +31,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   Text(
                     "Let get you started",
                     style: TextStyle(
-                      color: Colors.black,
+                      color: kPrimaryColor,
                       fontSize: getUiWidth(28),
                       fontWeight: FontWeight.bold,
                     ),

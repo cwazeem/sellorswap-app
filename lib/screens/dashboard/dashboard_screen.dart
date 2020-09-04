@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sell_or_swap/components/menu_tile.dart';
 import 'package:sell_or_swap/constants.dart';
+import 'package:sell_or_swap/providers/auth_provider.dart';
 import 'package:sell_or_swap/screens/dashboard/components/sell_find_seller.dart';
 import 'package:sell_or_swap/screens/dashboard/components/swap_find_swapper.dart';
 import 'package:sell_or_swap/size_config.dart';
@@ -18,7 +20,27 @@ class DashBoardScreen extends StatelessWidget {
         elevation: 0,
         backgroundColor: Colors.transparent,
       ),
-      drawer: Drawer(),
+      drawer: Drawer(
+        child: Column(
+          children: [
+            UserAccountsDrawerHeader(
+              accountName: Text("Ana Jaiay"),
+              accountEmail: Text("anajaiy@gmail.com"),
+            ),
+            ListTile(
+              title: Text(
+                "Logout",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              trailing: Icon(Icons.exit_to_app),
+              onTap: () {
+                Navigator.pop(context);
+                Provider.of<AuthProvider>(context, listen: false).logout();
+              },
+            )
+          ],
+        ),
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(getUiWidth(20)),
