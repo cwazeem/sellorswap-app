@@ -11,9 +11,11 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       body: SafeArea(
         child: SizedBox(
           width: double.infinity,
@@ -36,7 +38,9 @@ class _SignInScreenState extends State<SignInScreen> {
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: SizeConfig.screenHeight * 0.08),
-                  SignInForm(),
+                  SignInForm(
+                    scaffoldKey: _scaffoldKey,
+                  ),
                   SizedBox(height: getUiHeight(20)),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

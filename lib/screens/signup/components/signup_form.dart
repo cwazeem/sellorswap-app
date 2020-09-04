@@ -91,6 +91,7 @@ class _SignupFormState extends State<SignupForm> {
         // SizedBox(height: getUiHeight(20)),
         TextFormField(
           controller: _passwordTextController,
+          obscureText: true,
           decoration: InputDecoration(
             labelText: "Password",
             hintText: "Enter your password",
@@ -106,6 +107,7 @@ class _SignupFormState extends State<SignupForm> {
         SizedBox(height: getUiHeight(20)),
         TextFormField(
           controller: _retypePasswordTextController,
+          obscureText: true,
           decoration: InputDecoration(
             labelText: "Retype Password",
             hintText: "Enter your password again",

@@ -53,13 +53,14 @@ class ChatUserList extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(5),
                     child: Center(
-                        child: Text(
-                      "NEW",
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyText1
-                          .copyWith(color: Colors.white),
-                    )),
+                      child: Text(
+                        "NEW",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText1
+                            .copyWith(color: Colors.white),
+                      ),
+                    ),
                   ),
                 )
               ],
@@ -71,6 +72,14 @@ class ChatUserList extends StatelessWidget {
         );
       },
       separatorBuilder: (context, index) {
+        if (index % 5 == 0)
+          return Container(
+            color: kPrimaryColor,
+            height: getUiHeight(80),
+            child: Center(
+              child: Text("Advertisment"),
+            ),
+          );
         return Divider();
       },
     );

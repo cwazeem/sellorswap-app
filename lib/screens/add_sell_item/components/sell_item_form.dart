@@ -79,6 +79,8 @@ class _SignupFormState extends State<SellItemForm> {
         SizedBox(height: getUiHeight(20)),
         TextFormField(
           controller: _descriptionTextController,
+          keyboardType: TextInputType.multiline,
+          maxLines: 5,
           decoration: InputDecoration(
             labelText: "Description",
             hintText: "Enter your description",

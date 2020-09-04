@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sell_or_swap/components/default_button.dart';
 import 'package:sell_or_swap/constants.dart';
+import 'package:sell_or_swap/providers/auth_provider.dart';
 import 'package:sell_or_swap/size_config.dart';
 
 // This is the best practice
@@ -67,6 +69,8 @@ class _BodyState extends State<Body> {
                     DefaultButton(
                       text: "Continue",
                       press: () {
+                        Provider.of<AuthProvider>(context, listen: false)
+                            .setOnBoardingComplete(true);
                         Navigator.pushNamed(context, "/signup");
                       },
                     ),

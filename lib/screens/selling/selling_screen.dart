@@ -27,8 +27,10 @@ class SellingScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  buildItem(context, "Sell some stuff!", "route"),
-                  buildItem(context, "Swap my goods", "route"),
+                  buildItem(context, Icons.shopping_basket, "Sell some stuff!",
+                      "route"),
+                  buildItem(
+                      context, Icons.swap_horiz, "Swap my goods", "route"),
                 ],
               )
             ],
@@ -38,7 +40,8 @@ class SellingScreen extends StatelessWidget {
     );
   }
 
-  Widget buildItem(BuildContext context, String item, String route) {
+  Widget buildItem(
+      BuildContext context, IconData icon, String item, String route) {
     return GestureDetector(
       onTap: () {
 //         LocationResult result = await showLocationPicker(
@@ -72,7 +75,7 @@ class SellingScreen extends StatelessWidget {
                 ),
                 child: Center(
                   child: Icon(
-                    Icons.local_grocery_store,
+                    icon,
                     size: getUiWidth(50),
                     color: Colors.white.withOpacity(0.5),
                   ),

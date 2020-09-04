@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:sell_or_swap/components/default_button.dart';
 import 'package:sell_or_swap/constants.dart';
 import 'package:sell_or_swap/models/category.dart';
+import 'package:sell_or_swap/screens/add_sell_item/components/pick_image_option.dart';
 import 'package:sell_or_swap/screens/add_sell_item/components/sell_item_form.dart';
 import 'package:sell_or_swap/size_config.dart';
 
@@ -16,6 +20,8 @@ class AddSellItem extends StatefulWidget {
 class _AddSellItemState extends State<AddSellItem> {
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  File _image;
+  final picker = ImagePicker();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,13 +65,15 @@ class _AddSellItemState extends State<AddSellItem> {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Center(
-                child: OutlineButton(
-                  child: Text("Select Image"),
-                  onPressed: selectIamge,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
+                child: _image != null
+                    ? Image.file(_image)
+                    : OutlineButton(
+                        child: Text("Select Image"),
+                        onPressed: selectIamge,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
               ),
             ),
             SizedBox(height: getUiHeight(20)),
@@ -100,46 +108,37 @@ class _AddSellItemState extends State<AddSellItem> {
 
   selectIamge() async {
     _scaffoldKey.currentState.showBottomSheet(
-      (context) => Material(
-        color: kPrimaryColor.withOpacity(0.2),
-        borderRadius: BorderRadiusDirectional.only(
-          topStart: Radius.circular(15),
-          topEnd: Radius.circular(15),
-        ),
-        child: Container(
-          height: getUiHeight(80),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              buildPickImageButton(
-                "Camera",
-                () {},
-              ),
-              buildPickImageButton(
-                "Gallary",
-                () {},
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget buildPickImageButton(String text, Function onTap) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: getUiWidth(50),
-        height: getUiWidth(50),
-        decoration: BoxDecoration(
-            color: kPrimaryColor, borderRadius: BorderRadius.circular(10)),
-        child: Center(
-          child: Text(
-            "$text",
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
+      (context) => PickImageOption(
+        onCameraTap: () async {
+          try {
+            final pickedFile =
+                await picker.getImage(source: ImageSource.camera);
+            if (pickedFile != null) {
+              setState(() {
+                _image = File(pickedFile.path);
+              });
+              Navigator.pop(context);
+            }
+          } catch (e) {
+            _scaffoldKey.currentState
+                .showSnackBar(SnackBar(content: Text("$e")));
+          }
+        },
+        onGallaryTap: () async {
+          try {
+            final pickedFile =
+                await picker.getImage(source: ImageSource.gallery);
+            if (pickedFile != null) {
+              setState(() {
+                _image = File(pickedFile.path);
+              });
+              Navigator.pop(context);
+            }
+          } catch (e) {
+            _scaffoldKey.currentState
+                .showSnackBar(SnackBar(content: Text("$e")));
+          }
+        },
       ),
     );
   }

@@ -18,7 +18,7 @@ class NoAccountText extends StatelessWidget {
           style: TextStyle(fontSize: getUiWidth(16)),
         ),
         GestureDetector(
-          onTap: () => Navigator.pushNamed(context, "/"),
+          onTap: () => Navigator.pushNamed(context, "/signup"),
           child: Text(
             "Sign Up",
             style: TextStyle(fontSize: getUiWidth(16), color: kPrimaryColor),
