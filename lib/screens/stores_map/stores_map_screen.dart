@@ -4,7 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:sell_or_swap/constants.dart';
 import 'package:sell_or_swap/models/store.dart';
+import 'package:sell_or_swap/size_config.dart';
+
+import 'components/store_map_card.dart';
 
 class StoresMapScreen extends StatefulWidget {
   static const String name = "storesMapScreen";
@@ -46,7 +50,7 @@ class _StoresMapScreenState extends State<StoresMapScreen> {
   }
 
   // Ui Variable
-  Completer<GoogleMapController> _controller = Completer();
+  GoogleMapController _googleMapController;
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   MarkerId selectedMarker;
   BitmapDescriptor pinLocationIcon;
@@ -83,22 +87,43 @@ class _StoresMapScreenState extends State<StoresMapScreen> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             if (snapshot.data) {
-              return GoogleMap(
-                mapType: MapType.hybrid,
-                initialCameraPosition: CameraPosition(
-                  target: LatLng(9.506508, -0.955140),
-                  zoom: 12,
-                ),
-                indoorViewEnabled: true,
-                myLocationEnabled: true,
-                myLocationButtonEnabled: true,
-                onMapCreated: (GoogleMapController controller) {
-                  _controller.complete(controller);
-                  _stores.forEach((element) {
-                    setMarker(element);
-                  });
-                },
-                markers: Set<Marker>.of(markers.values),
+              return Stack(
+                children: [
+                  GoogleMap(
+                    mapType: MapType.hybrid,
+                    initialCameraPosition: CameraPosition(
+                      target: LatLng(9.506508, -0.955140),
+                      zoom: 12,
+                    ),
+                    indoorViewEnabled: true,
+                    myLocationEnabled: true,
+                    myLocationButtonEnabled: true,
+                    padding: EdgeInsets.only(bottom: getUiHeight(130)),
+                    onMapCreated: (GoogleMapController controller) {
+                      _googleMapController = controller;
+                      _stores.forEach((element) {
+                        setMarker(element);
+                      });
+                    },
+                    markers: Set<Marker>.of(markers.values),
+                  ),
+                  Positioned(
+                    bottom: 10,
+                    left: 10,
+                    right: 10,
+                    height: getUiHeight(120),
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: _stores.length,
+                      itemBuilder: (context, index) {
+                        return StoreMapCard(
+                          controller: _googleMapController,
+                          store: _stores[index],
+                        );
+                      },
+                    ),
+                  )
+                ],
               );
             }
             return Center(

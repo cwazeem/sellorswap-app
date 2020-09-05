@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sell_or_swap/components/menu_tile.dart';
@@ -24,7 +25,17 @@ class DashBoardScreen extends StatelessWidget {
         child: Column(
           children: [
             UserAccountsDrawerHeader(
-              accountName: Text("Ana Jaiay"),
+              currentAccountPicture: ClipRRect(
+                borderRadius: BorderRadius.circular(getUiWidth(10)),
+                child: CachedNetworkImage(
+                    imageUrl:
+                        "https://randomuser.me/api/portraits/women/2.jpg"),
+              ),
+              accountName: Text(
+                "Ana Jaiay",
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.headline6,
+              ),
               accountEmail: Text("anajaiy@gmail.com"),
             ),
             ListTile(
