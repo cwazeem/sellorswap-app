@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
-import 'package:sell_or_swap/constants.dart';
 import 'package:sell_or_swap/size_config.dart';
 
 class SellItemForm extends StatefulWidget {
@@ -14,9 +12,6 @@ class _SignupFormState extends State<SellItemForm> {
   final _itemPriceTextController = TextEditingController();
   final _contactTextController = TextEditingController();
   final _descriptionTextController = TextEditingController();
-
-  String initialCountry = 'GH';
-  PhoneNumber _number = PhoneNumber(isoCode: 'GH');
 
   @override
   Widget build(BuildContext context) {

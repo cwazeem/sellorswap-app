@@ -1,10 +1,7 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
-import 'package:sell_or_swap/constants.dart';
 import 'package:sell_or_swap/models/store.dart';
 import 'package:sell_or_swap/size_config.dart';
 
@@ -20,16 +17,16 @@ class _StoresMapScreenState extends State<StoresMapScreen> {
   @override
   void initState() {
     super.initState();
+    BitmapDescriptor.fromAssetImage(ImageConfiguration(devicePixelRatio: 2.5),
+            'assets/images/marker.png')
+        .then((value) => pinLocationIcon = value);
   }
 
   Location location = new Location();
   bool _serviceEnabled;
   PermissionStatus _permissionGranted;
-  LocationData _locationData;
 
   Future<bool> handlePermission() async {
-    pinLocationIcon = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(devicePixelRatio: 2.5), 'assets/images/marker.png');
     _serviceEnabled = await location.serviceEnabled();
     if (!_serviceEnabled) {
       _serviceEnabled = await location.requestService();
@@ -126,8 +123,16 @@ class _StoresMapScreenState extends State<StoresMapScreen> {
                 ],
               );
             }
-            return Center(
-              child: Text("Permission not granted"),
+            return Column(
+              children: [
+                Text("Permission not granted"),
+                OutlineButton(
+                  onPressed: () {
+                    setState(() {});
+                  },
+                  child: Text("Grant Permission"),
+                )
+              ],
             );
           }
           return Center(

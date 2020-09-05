@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_map_location_picker/google_map_location_picker.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sell_or_swap/constants.dart';
 import 'package:sell_or_swap/size_config.dart';
 
