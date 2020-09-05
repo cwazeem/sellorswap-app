@@ -57,7 +57,7 @@ class StoreMapCard extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: 0,
+            bottom: 0,
             right: 10,
             child: Container(
               height: getUiHeight(25),
@@ -65,8 +65,8 @@ class StoreMapCard extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(getUiWidth(5)),
-                  bottomRight: Radius.circular(getUiWidth(5)),
+                  topLeft: Radius.circular(getUiWidth(5)),
+                  topRight: Radius.circular(getUiWidth(5)),
                 ),
               ),
               child: Center(

@@ -1,11 +1,294 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:sell_or_swap/constants.dart';
 import 'package:sell_or_swap/models/store.dart';
 import 'package:sell_or_swap/size_config.dart';
 
 import 'components/store_map_card.dart';
+
+String mapsStyle = '''[  {
+    "featureType": "administrative",
+    "elementType": "geometry.fill",
+    "stylers": [
+      {
+        "color": "#d6e2e6"
+      }
+    ]
+  },
+  {
+    "featureType": "administrative",
+    "elementType": "geometry.stroke",
+    "stylers": [
+      {
+        "color": "#cfd4d5"
+      }
+    ]
+  },
+  {
+    "featureType": "administrative",
+    "elementType": "labels.text.fill",
+    "stylers": [
+      {
+        "color": "#7492a8"
+      }
+    ]
+  },
+  {
+    "featureType": "administrative.neighborhood",
+    "elementType": "labels.text.fill",
+    "stylers": [
+      {
+        "lightness": 25
+      }
+    ]
+  },
+  {
+    "featureType": "landscape.man_made",
+    "elementType": "geometry.fill",
+    "stylers": [
+      {
+        "color": "#dde2e3"
+      }
+    ]
+  },
+  {
+    "featureType": "landscape.man_made",
+    "elementType": "geometry.stroke",
+    "stylers": [
+      {
+        "color": "#cfd4d5"
+      }
+    ]
+  },
+  {
+    "featureType": "landscape.natural",
+    "elementType": "geometry.fill",
+    "stylers": [
+      {
+        "color": "#dde2e3"
+      }
+    ]
+  },
+  {
+    "featureType": "landscape.natural",
+    "elementType": "labels.text.fill",
+    "stylers": [
+      {
+        "color": "#7492a8"
+      }
+    ]
+  },
+  {
+    "featureType": "landscape.natural.terrain",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "poi",
+    "elementType": "geometry.fill",
+    "stylers": [
+      {
+        "color": "#dde2e3"
+      }
+    ]
+  },
+  {
+    "featureType": "poi",
+    "elementType": "labels.icon",
+    "stylers": [
+      {
+        "saturation": -100
+      }
+    ]
+  },
+  {
+    "featureType": "poi",
+    "elementType": "labels.text.fill",
+    "stylers": [
+      {
+        "color": "#588ca4"
+      }
+    ]
+  },
+  {
+    "featureType": "poi.park",
+    "elementType": "geometry.fill",
+    "stylers": [
+      {
+        "color": "#a9de83"
+      }
+    ]
+  },
+  {
+    "featureType": "poi.park",
+    "elementType": "geometry.stroke",
+    "stylers": [
+      {
+        "color": "#bae6a1"
+      }
+    ]
+  },
+  {
+    "featureType": "poi.sports_complex",
+    "elementType": "geometry.fill",
+    "stylers": [
+      {
+        "color": "#c6e8b3"
+      }
+    ]
+  },
+  {
+    "featureType": "poi.sports_complex",
+    "elementType": "geometry.stroke",
+    "stylers": [
+      {
+        "color": "#bae6a1"
+      }
+    ]
+  },
+  {
+    "featureType": "road",
+    "elementType": "labels.icon",
+    "stylers": [
+      {
+        "saturation": -45
+      },
+      {
+        "lightness": 10
+      },
+      {
+        "visibility": "on"
+      }
+    ]
+  },
+  {
+    "featureType": "road",
+    "elementType": "labels.text.fill",
+    "stylers": [
+      {
+        "color": "#41626b"
+      }
+    ]
+  },
+  {
+    "featureType": "road.arterial",
+    "elementType": "geometry.fill",
+    "stylers": [
+      {
+        "color": "#ffffff"
+      }
+    ]
+  },
+  {
+    "featureType": "road.highway",
+    "elementType": "geometry.fill",
+    "stylers": [
+      {
+        "color": "#c1d1d6"
+      }
+    ]
+  },
+  {
+    "featureType": "road.highway",
+    "elementType": "geometry.stroke",
+    "stylers": [
+      {
+        "color": "#a6b5bb"
+      }
+    ]
+  },
+  {
+    "featureType": "road.highway",
+    "elementType": "labels.icon",
+    "stylers": [
+      {
+        "visibility": "on"
+      }
+    ]
+  },
+  {
+    "featureType": "road.highway.controlled_access",
+    "elementType": "geometry.fill",
+    "stylers": [
+      {
+        "color": "#9fb6bd"
+      }
+    ]
+  },
+  {
+    "featureType": "road.local",
+    "elementType": "geometry.fill",
+    "stylers": [
+      {
+        "color": "#ffffff"
+      }
+    ]
+  },
+  {
+    "featureType": "transit",
+    "elementType": "labels.icon",
+    "stylers": [
+      {
+        "saturation": -70
+      }
+    ]
+  },
+  {
+    "featureType": "transit.line",
+    "elementType": "geometry.fill",
+    "stylers": [
+      {
+        "color": "#b4cbd4"
+      }
+    ]
+  },
+  {
+    "featureType": "transit.line",
+    "elementType": "labels.text.fill",
+    "stylers": [
+      {
+        "color": "#588ca4"
+      }
+    ]
+  },
+  {
+    "featureType": "transit.station",
+    "elementType": "labels.text.fill",
+    "stylers": [
+      {
+        "color": "#008cb5"
+      }
+    ]
+  },
+  {
+    "featureType": "transit.station.airport",
+    "elementType": "geometry.fill",
+    "stylers": [
+      {
+        "saturation": -100
+      },
+      {
+        "lightness": -5
+      }
+    ]
+  },
+  {
+    "featureType": "water",
+    "elementType": "geometry.fill",
+    "stylers": [
+      {
+        "color": "#a6cbe3"
+      }
+    ]
+  }
+]
+''';
 
 class StoresMapScreen extends StatefulWidget {
   static const String name = "storesMapScreen";
@@ -14,12 +297,17 @@ class StoresMapScreen extends StatefulWidget {
 }
 
 class _StoresMapScreenState extends State<StoresMapScreen> {
+  String uberStyle;
   @override
   void initState() {
     super.initState();
     BitmapDescriptor.fromAssetImage(ImageConfiguration(devicePixelRatio: 2.5),
             'assets/images/marker.png')
         .then((value) => pinLocationIcon = value);
+
+    _loadFromAsset().then((value) {
+      uberStyle = value;
+    });
   }
 
   Location location = new Location();
@@ -44,6 +332,10 @@ class _StoresMapScreenState extends State<StoresMapScreen> {
       return true;
     }
     return false;
+  }
+
+  Future<String> _loadFromAsset() async {
+    return await rootBundle.loadString("assets/data/uber_style.json");
   }
 
   // Ui Variable
@@ -79,66 +371,81 @@ class _StoresMapScreenState extends State<StoresMapScreen> {
         title: Text("Stores"),
         centerTitle: true,
       ),
-      body: FutureBuilder<bool>(
-        future: handlePermission(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            if (snapshot.data) {
-              return Stack(
-                children: [
-                  GoogleMap(
-                    mapType: MapType.hybrid,
-                    initialCameraPosition: CameraPosition(
-                      target: LatLng(9.506508, -0.955140),
-                      zoom: 12,
-                    ),
-                    indoorViewEnabled: true,
-                    myLocationEnabled: true,
-                    myLocationButtonEnabled: true,
-                    padding: EdgeInsets.only(bottom: getUiHeight(130)),
-                    onMapCreated: (GoogleMapController controller) {
-                      _googleMapController = controller;
-                      _stores.forEach((element) {
-                        setMarker(element);
-                      });
-                    },
-                    markers: Set<Marker>.of(markers.values),
-                  ),
-                  Positioned(
-                    bottom: 10,
-                    left: 10,
-                    right: 10,
-                    height: getUiHeight(120),
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: _stores.length,
-                      itemBuilder: (context, index) {
-                        return StoreMapCard(
-                          controller: _googleMapController,
-                          store: _stores[index],
-                        );
-                      },
-                    ),
-                  )
-                ],
-              );
-            }
-            return Column(
-              children: [
-                Text("Permission not granted"),
-                OutlineButton(
-                  onPressed: () {
-                    setState(() {});
-                  },
-                  child: Text("Grant Permission"),
-                )
-              ],
-            );
-          }
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        },
+      body: Column(
+        children: [
+          Container(
+            width: double.infinity,
+            padding: EdgeInsets.all(getUiWidth(30)),
+            decoration: BoxDecoration(color: Colors.white),
+            child: Center(child: Text("BANNER")),
+          ),
+          Expanded(
+            child: FutureBuilder<bool>(
+              future: handlePermission(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  if (snapshot.data) {
+                    return Stack(
+                      children: [
+                        GoogleMap(
+                          mapType: MapType.normal,
+                          initialCameraPosition: CameraPosition(
+                            target: LatLng(9.506508, -0.955140),
+                            zoom: 12,
+                          ),
+                          myLocationEnabled: true,
+                          myLocationButtonEnabled: true,
+                          buildingsEnabled: true,
+                          mapToolbarEnabled: true,
+                          trafficEnabled: true,
+                          padding: EdgeInsets.only(bottom: getUiHeight(130)),
+                          onMapCreated: (GoogleMapController controller) {
+                            _googleMapController = controller;
+                            controller.setMapStyle(mapsStyle);
+                            _stores.forEach((element) {
+                              setMarker(element);
+                            });
+                          },
+                          markers: Set<Marker>.of(markers.values),
+                        ),
+                        Positioned(
+                          bottom: 10,
+                          left: 10,
+                          right: 10,
+                          height: getUiHeight(120),
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: _stores.length,
+                            itemBuilder: (context, index) {
+                              return StoreMapCard(
+                                controller: _googleMapController,
+                                store: _stores[index],
+                              );
+                            },
+                          ),
+                        )
+                      ],
+                    );
+                  }
+                  return Column(
+                    children: [
+                      Text("Permission not granted"),
+                      OutlineButton(
+                        onPressed: () {
+                          setState(() {});
+                        },
+                        child: Text("Grant Permission"),
+                      )
+                    ],
+                  );
+                }
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
