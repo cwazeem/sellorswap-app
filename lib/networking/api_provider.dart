@@ -21,7 +21,6 @@ class ApiProvider {
     return {
       HttpHeaders.authorizationHeader: 'Bearer $_token',
       HttpHeaders.acceptHeader: 'application/json',
-      HttpHeaders.contentTypeHeader: 'application/json',
     };
   }
 
