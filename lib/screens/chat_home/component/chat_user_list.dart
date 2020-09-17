@@ -33,7 +33,7 @@ class ChatUserList extends StatelessWidget {
             ),
           ),
           title: Text("${user[index].name}"),
-          subtitle: Text("${user[index].address.street}"),
+          subtitle: Text("${user[index].mobile}"),
           trailing: Container(
             width: getUiWidth(60),
             child: Column(

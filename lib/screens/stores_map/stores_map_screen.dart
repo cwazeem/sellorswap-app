@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
-import 'package:sell_or_swap/constants.dart';
 import 'package:sell_or_swap/models/store.dart';
+import 'package:sell_or_swap/repository/store_repository.dart';
 import 'package:sell_or_swap/size_config.dart';
 
 import 'components/store_map_card.dart';
@@ -298,16 +298,22 @@ class StoresMapScreen extends StatefulWidget {
 
 class _StoresMapScreenState extends State<StoresMapScreen> {
   String uberStyle;
+  StoreRepository _storeRepository;
+  List<Store> _stores = [];
   @override
   void initState() {
     super.initState();
     BitmapDescriptor.fromAssetImage(ImageConfiguration(devicePixelRatio: 2.5),
-            'assets/images/marker.png')
-        .then((value) => pinLocationIcon = value);
+            'assets/images/seller_marker.png')
+        .then((value) => sellerLocationIcon = value);
+    BitmapDescriptor.fromAssetImage(ImageConfiguration(devicePixelRatio: 2.5),
+            'assets/images/top_seller_marker.png')
+        .then((value) => topSellerLocationIcon = value);
 
     _loadFromAsset().then((value) {
       uberStyle = value;
     });
+    _storeRepository = StoreRepository();
   }
 
   Location location = new Location();
@@ -342,27 +348,8 @@ class _StoresMapScreenState extends State<StoresMapScreen> {
   GoogleMapController _googleMapController;
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   MarkerId selectedMarker;
-  BitmapDescriptor pinLocationIcon;
-  List<Store> _stores = [
-    Store(
-        id: 1,
-        name: 'Kashana',
-        addresss: 'Hajjjslfsd 2',
-        lat: 9.376986,
-        long: -0.825010),
-    Store(
-        id: 2,
-        name: 'Kapil',
-        addresss: 'Ring Road 25, Ghana',
-        lat: 9.458633,
-        long: -1.004107),
-    Store(
-        id: 3,
-        name: 'Humanan',
-        addresss: 'Kalony, 5, House 8',
-        lat: 9.566098,
-        long: -0.940377),
-  ];
+  BitmapDescriptor sellerLocationIcon;
+  BitmapDescriptor topSellerLocationIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -390,8 +377,8 @@ class _StoresMapScreenState extends State<StoresMapScreen> {
                         GoogleMap(
                           mapType: MapType.normal,
                           initialCameraPosition: CameraPosition(
-                            target: LatLng(9.506508, -0.955140),
-                            zoom: 12,
+                            target: LatLng(7.753121, -0.985663),
+                            zoom: 15,
                           ),
                           myLocationEnabled: true,
                           myLocationButtonEnabled: true,
@@ -402,9 +389,7 @@ class _StoresMapScreenState extends State<StoresMapScreen> {
                           onMapCreated: (GoogleMapController controller) {
                             _googleMapController = controller;
                             controller.setMapStyle(mapsStyle);
-                            _stores.forEach((element) {
-                              setMarker(element);
-                            });
+                            getNearStores();
                           },
                           markers: Set<Marker>.of(markers.values),
                         ),
@@ -412,7 +397,7 @@ class _StoresMapScreenState extends State<StoresMapScreen> {
                           bottom: 10,
                           left: 10,
                           right: 10,
-                          height: getUiHeight(120),
+                          height: getUiHeight(125),
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
                             itemCount: _stores.length,
@@ -428,6 +413,7 @@ class _StoresMapScreenState extends State<StoresMapScreen> {
                     );
                   }
                   return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text("Permission not granted"),
                       OutlineButton(
@@ -450,12 +436,23 @@ class _StoresMapScreenState extends State<StoresMapScreen> {
     );
   }
 
+  Future<void> getNearStores() async {
+    List<Store> stores = await _storeRepository.getNearStore(0.0, 0.0, 10);
+    setState(() {
+      _stores = stores;
+    });
+    _stores.forEach((element) {
+      setMarker(element);
+    });
+  }
+
   setMarker(Store store) {
     final Marker marker = Marker(
       markerId: MarkerId(store.id.toString()),
-      position: LatLng(store.lat, store.long),
+      position:
+          LatLng(store.location.coordinates[1], store.location.coordinates[0]),
       infoWindow: InfoWindow(title: store.name, snippet: '*'),
-      icon: pinLocationIcon,
+      icon: store.topSeller == 1 ? topSellerLocationIcon : sellerLocationIcon,
       onTap: () {
         print("Stroe id: ${store.id}");
       },

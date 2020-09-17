@@ -11,35 +11,38 @@ class AppDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-      child: Column(
-        children: [
-          UserAccountsDrawerHeader(
-            currentAccountPicture: ClipRRect(
-              borderRadius: BorderRadius.circular(getUiWidth(10)),
-              child: CachedNetworkImage(
-                  imageUrl: "https://randomuser.me/api/portraits/women/2.jpg"),
-            ),
-            accountName: Text(
-              "Ana Jaiay",
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.headline6,
-            ),
-            accountEmail: Text("anajaiy@gmail.com"),
+    return Consumer<AuthProvider>(
+      builder: (context, value, child) {
+        return Drawer(
+          child: Column(
+            children: [
+              UserAccountsDrawerHeader(
+                currentAccountPicture: ClipRRect(
+                  borderRadius: BorderRadius.circular(getUiWidth(10)),
+                  child: CachedNetworkImage(imageUrl: "${value.user.avatar}"),
+                ),
+                accountName: Text(
+                  "${value.user.name}",
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+                accountEmail: Text("${value.user.email}"),
+              ),
+              ListTile(
+                title: Text(
+                  "Logout",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                trailing: Icon(Icons.exit_to_app),
+                onTap: () {
+                  Navigator.pop(context);
+                  Provider.of<AuthProvider>(context, listen: false).logout();
+                },
+              )
+            ],
           ),
-          ListTile(
-            title: Text(
-              "Logout",
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            trailing: Icon(Icons.exit_to_app),
-            onTap: () {
-              Navigator.pop(context);
-              Provider.of<AuthProvider>(context, listen: false).logout();
-            },
-          )
-        ],
-      ),
+        );
+      },
     );
   }
 }

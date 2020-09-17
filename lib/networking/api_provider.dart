@@ -7,7 +7,7 @@ import 'package:sell_or_swap/networking/custom_exception.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiProvider {
-  final String _baseUrl = "https://www.ohyesmart.com/api/v1/consumer";
+  final String _baseUrl = "https://www.sellorswap.place/api";
 
   String _token;
 
@@ -20,7 +20,8 @@ class ApiProvider {
   Map<String, String> _commonHeader() {
     return {
       HttpHeaders.authorizationHeader: 'Bearer $_token',
-      HttpHeaders.acceptHeader: 'application/json'
+      HttpHeaders.acceptHeader: 'application/json',
+      HttpHeaders.contentTypeHeader: 'application/json',
     };
   }
 
@@ -49,7 +50,7 @@ class ApiProvider {
     var responseJson;
     try {
       _token = _token == null ? _token = await _getToken() : _token;
-      print("$_token");
+      print("URL: ${_baseUrl + url} : Token : $_token : Body : $body");
       final response = await http
           .post(_baseUrl + url, headers: _commonHeader(), body: body)
           .timeout(Duration(seconds: 10));
@@ -76,6 +77,8 @@ class ApiProvider {
   }
 
   dynamic _response(http.Response response) {
+    print(
+        "Api Response: Status Code: ${response.statusCode} => ${response.body}");
     switch (response.statusCode) {
       case 200:
         var responseJson = json.decode(response.body.toString());

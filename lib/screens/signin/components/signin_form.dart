@@ -4,6 +4,7 @@ import 'package:sell_or_swap/components/default_button.dart';
 import 'package:sell_or_swap/constants.dart';
 import 'package:sell_or_swap/providers/auth_provider.dart';
 import 'package:sell_or_swap/size_config.dart';
+import 'package:sell_or_swap/repository/user_repository.dart';
 
 class SignInForm extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
@@ -21,6 +22,13 @@ class _SignInFormState extends State<SignInForm> {
   bool _remember = false;
 
   bool _autoValidate = false;
+  // Database API Objects
+  UserRepository _userRepository;
+  @override
+  void initState() {
+    super.initState();
+    _userRepository = UserRepository();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,15 +96,27 @@ class _SignInFormState extends State<SignInForm> {
             text: "Continue",
             press: () async {
               if (_formKey.currentState.validate()) {
-                _formKey.currentState.save();
-                _emailTextController.text = "";
-                _passwordTextController.text = "";
-                Provider.of<AuthProvider>(context, listen: false)
-                    .doLogin(context, widget.scaffoldKey,
-                        _emailTextController.text, _passwordTextController.text)
-                    .then(
-                      (value) {},
+                try {
+                  Map<String, dynamic> _response = await _userRepository.login({
+                    'email': _emailTextController.text,
+                    'password': _passwordTextController.text
+                  });
+                  if (_response.containsKey('status') && _response['status']) {
+                    await Provider.of<AuthProvider>(context, listen: false)
+                        .doLogin(_response);
+                    Navigator.of(context).popUntil((route) => route.isFirst);
+                  } else {
+                    var snackbar = SnackBar(
+                      content: Text("Username or password not match"),
                     );
+                    widget.scaffoldKey.currentState.showSnackBar(snackbar);
+                  }
+                } catch (e) {
+                  var snackbar = SnackBar(
+                    content: Text("$e"),
+                  );
+                  widget.scaffoldKey.currentState.showSnackBar(snackbar);
+                }
               } else {
                 setState(() {
                   _autoValidate = true;
