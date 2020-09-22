@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:sell_or_swap/models/item.dart';
 import 'package:sell_or_swap/models/store.dart';
 import 'package:sell_or_swap/networking/api_provider.dart';
 
@@ -11,5 +12,12 @@ class StoreRepository {
     List stores = response['data'];
     return List.generate(
         stores.length, (index) => Store.fromJson(stores[index]));
+  }
+
+  Future<List<Item>> getStoreItems(int sotreId) async {
+    Map<String, dynamic> response =
+        await _provider.get("/store/$sotreId/item", isAuth: true);
+    List items = response['data']['items'];
+    return List.generate(items.length, (index) => Item.fromJson(items[index]));
   }
 }

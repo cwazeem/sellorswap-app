@@ -2,11 +2,11 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:sell_or_swap/models/chat_message.dart';
-import 'package:sell_or_swap/models/user.dart';
+import 'package:sell_or_swap/models/store.dart';
 import 'package:sell_or_swap/size_config.dart';
 
 class ChatScreen extends StatefulWidget {
-  final User user;
+  final Store user;
 
   const ChatScreen({Key key, this.user}) : super(key: key);
   @override

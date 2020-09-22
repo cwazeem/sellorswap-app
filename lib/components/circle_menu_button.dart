@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:sell_or_swap/constants.dart';
 import 'package:sell_or_swap/size_config.dart';
 
-class OptionMenuButton extends StatelessWidget {
-  const OptionMenuButton({
+class CircleMenuButton extends StatelessWidget {
+  const CircleMenuButton({
     Key key,
     this.onTap,
     this.title,
@@ -17,24 +17,31 @@ class OptionMenuButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: getUiWidth(80),
+      width: getUiWidth(60),
+      height: getUiWidth(60),
       child: Material(
-        borderRadius: BorderRadius.circular(getUiWidth(10)),
+        borderRadius: BorderRadius.circular(getUiWidth(50)),
         child: InkWell(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(getUiWidth(10)),
+          borderRadius: BorderRadius.circular(getUiWidth(50)),
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(getUiWidth(10)),
             child: Column(
               children: [
                 Icon(
                   icon,
-                  size: getUiHeight(40),
+                  size: getUiWidth(20),
                   color: kPrimaryColor,
                 ),
                 SizedBox(height: getUiHeight(5)),
                 Center(
-                  child: Text("$title"),
+                  child: Text(
+                    "$title",
+                    style: Theme.of(context)
+                        .textTheme
+                        .subtitle2
+                        .copyWith(fontSize: getUiWidth(8)),
+                  ),
                 )
               ],
             ),

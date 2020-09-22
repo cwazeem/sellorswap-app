@@ -451,11 +451,14 @@ class _StoresMapScreenState extends State<StoresMapScreen> {
       markerId: MarkerId(store.id.toString()),
       position:
           LatLng(store.location.coordinates[1], store.location.coordinates[0]),
-      infoWindow: InfoWindow(title: store.name, snippet: '*'),
+      infoWindow: InfoWindow(
+        title: store.name,
+        snippet: '*',
+        onTap: () {
+          Navigator.pushNamed(context, "/sellerShope", arguments: store);
+        },
+      ),
       icon: store.topSeller == 1 ? topSellerLocationIcon : sellerLocationIcon,
-      onTap: () {
-        print("Stroe id: ${store.id}");
-      },
     );
     setState(() {
       markers[MarkerId(store.id.toString())] = marker;
