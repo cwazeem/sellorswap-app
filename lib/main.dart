@@ -45,8 +45,8 @@ class RouterScreen extends StatelessWidget {
             return SignInScreen();
             break;
           case AuthStatus.Authenticated:
-            // return DashBoardScreen();
-            return StoresMapScreen();
+            if (value.user.role == 'buyer') return StoresMapScreen();
+            return DashBoardScreen();
             break;
           case AuthStatus.Uninitialized:
             // TODO: Handle this case.

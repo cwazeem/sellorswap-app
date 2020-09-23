@@ -13,11 +13,10 @@ class CategoryRepository {
   }
 
   Future<List<AppCategory>> getCategories() async {
-    final response =
-        await http.get('https://jsonplaceholder.typicode.com/albums');
-    List _users = jsonDecode(response.body);
-    return List.generate(
-        _users.length, (index) => AppCategory.fromJson(_users[index]));
+    final response = await _provider.get("/category", isAuth: true);
+    List _categories = response['data'];
+    return List.generate(_categories.length,
+        (index) => AppCategory.fromJson(_categories[index]));
   }
 
   // Future<Map<String, dynamic>> updateAddress(dynamic body) async {

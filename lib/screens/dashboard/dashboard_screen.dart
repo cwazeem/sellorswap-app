@@ -1,10 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:sell_or_swap/components/menu_tile.dart';
-import 'package:sell_or_swap/constants.dart';
-import 'package:sell_or_swap/screens/dashboard/components/sell_find_seller.dart';
-import 'package:sell_or_swap/screens/dashboard/components/swap_find_swapper.dart';
+import 'package:provider/provider.dart';
+import 'package:sell_or_swap/components/circle_menu_button.dart';
+import 'package:sell_or_swap/providers/auth_provider.dart';
+import 'components/seller_shop_items_grid.dart';
 import 'package:sell_or_swap/size_config.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 import 'components/app_drawer.dart';
 
 class DashBoardScreen extends StatelessWidget {
@@ -12,62 +13,106 @@ class DashBoardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
-      backgroundColor: kPrimaryColor,
-      appBar: AppBar(
-        title: Text("Dashboard"),
-        centerTitle: true,
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-      ),
+      appBar: AppBar(),
       drawer: AppDrawer(),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(getUiWidth(20)),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  MenuTile(
-                    icon: Icons.local_offer,
-                    title: "Sell",
-                    onTap: () => _scaffoldKey.currentState
-                        .showBottomSheet((context) => SellOrFindSeller()),
+      body: Consumer<AuthProvider>(
+        builder: (context, auth, child) {
+          return Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Column(
+              children: [
+                Container(
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            width: getUiWidth(80),
+                            height: getUiWidth(80),
+                            child: ClipRRect(
+                              borderRadius:
+                                  BorderRadius.circular(getUiWidth(10)),
+                              child: CachedNetworkImage(
+                                imageUrl: auth.user.store.logo,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: getUiWidth(20)),
+                          Column(
+                            children: [
+                              Text(
+                                auth.user.store.name ?? "",
+                                style: Theme.of(context).textTheme.headline4,
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    auth.user.mobile ?? "",
+                                    style:
+                                        Theme.of(context).textTheme.subtitle1,
+                                  ),
+                                  IconButton(
+                                    iconSize: getUiWidth(18),
+                                    icon: Icon(Icons.share),
+                                    onPressed: () {},
+                                  ),
+                                ],
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: getUiHeight(20),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          CircleMenuButton(
+                            icon: Icons.supervised_user_circle,
+                            title: "Profile",
+                            onTap: () {
+                              Navigator.pushNamed(context, '/profile',
+                                  arguments: auth.user.store);
+                            },
+                          ),
+                          CircleMenuButton(
+                            icon: Icons.message,
+                            title: "Messenger",
+                            onTap: () {
+                              Navigator.pushNamed(context, '/chathome',
+                                  arguments: auth.user.store);
+                            },
+                          ),
+                          CircleMenuButton(
+                            icon: Icons.add_circle,
+                            title: "Add Item",
+                            onTap: () {
+                              Navigator.pushNamed(context, '/sellcategory',
+                                  arguments: auth.user.store);
+                            },
+                          ),
+                          CircleMenuButton(
+                            icon: Icons.adjust,
+                            title: "Banner",
+                            onTap: () {},
+                          )
+                        ],
+                      )
+                    ],
                   ),
-                  MenuTile(
-                    icon: Icons.swap_horizontal_circle,
-                    title: "Swap",
-                    onTap: () => _scaffoldKey.currentState
-                        .showBottomSheet((context) => SwapOrFindSwapper()),
-                  )
-                ],
-              ),
-              SizedBox(
-                height: getUiHeight(20),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  MenuTile(
-                    icon: Icons.supervised_user_circle,
-                    title: "Profile",
-                    onTap: () {
-                      Navigator.pushNamed(context, '/profile');
-                    },
-                  ),
-                  MenuTile(
-                    icon: Icons.message,
-                    title: "Messenger",
-                    onTap: () {
-                      Navigator.pushNamed(context, '/chathome');
-                    },
-                  )
-                ],
-              )
-            ],
-          ),
-        ),
+                ),
+                SizedBox(
+                  height: getUiHeight(20),
+                ),
+                Expanded(
+                  child: SellerShopGridItems(store: auth.user.store),
+                )
+              ],
+            ),
+          );
+        },
       ),
     );
   }

@@ -37,7 +37,7 @@ class _AddSellItemState extends State<AddSellItem> {
             SizedBox(height: getUiHeight(20)),
             Center(
               child: Text(
-                "${widget.category.title}",
+                "${widget.category.name}",
                 style: TextStyle(
                   color: kPrimaryColor,
                   fontSize: getUiWidth(28),

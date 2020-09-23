@@ -1,8 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:sell_or_swap/components/circle_menu_button.dart';
-import 'package:sell_or_swap/components/option_menu_button.dart';
-import 'package:sell_or_swap/constants.dart';
 import 'package:sell_or_swap/models/store.dart';
 import 'package:sell_or_swap/screens/seller_shop/componenets/seller_shop_items_grid.dart';
 import 'package:sell_or_swap/size_config.dart';

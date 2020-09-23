@@ -32,9 +32,8 @@ class AuthProvider extends ChangeNotifier {
       if (_sharedPreferences.containsKey('AuthToken') &&
           _sharedPreferences.getString('AuthToken') != null) {
         _authStatus = AuthStatus.Authenticated;
-        Map<String, dynamic> _userjson =
-            json.decode(_sharedPreferences.getString('user'));
-        _user = User.fromJson(_userjson);
+        _user =
+            User.fromJson(json.decode(_sharedPreferences.getString('user')));
       } else if (!_sharedPreferences.containsKey('onboarding')) {
         _authStatus = AuthStatus.Onboarding;
       }
@@ -52,7 +51,7 @@ class AuthProvider extends ChangeNotifier {
     _authStatus = AuthStatus.Authenticated;
     _sharedPreferences.setString('AuthToken', data['data']['token']);
     _user = User.fromJson(data['data']['user']);
-    _sharedPreferences.setString('user', _user.toJson().toString());
+    _sharedPreferences.setString('user', jsonEncode(data['data']['user']));
     notifyListeners();
   }
 

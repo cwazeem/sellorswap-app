@@ -20,7 +20,7 @@ class CategoryList extends StatelessWidget {
             ),
           ),
           title: Text(
-            "${categories[index].title}",
+            "${categories[index].name}",
             style: Theme.of(context).textTheme.headline6,
           ),
           trailing: Icon(Icons.arrow_forward),

@@ -5,6 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:sell_or_swap/models/store.dart';
 import 'package:sell_or_swap/repository/store_repository.dart';
+import 'package:sell_or_swap/screens/stores_map/components/app_drawer.dart';
 import 'package:sell_or_swap/size_config.dart';
 
 import 'components/store_map_card.dart';
@@ -358,6 +359,7 @@ class _StoresMapScreenState extends State<StoresMapScreen> {
         title: Text("Stores"),
         centerTitle: true,
       ),
+      drawer: AppDrawer(),
       body: Column(
         children: [
           Container(

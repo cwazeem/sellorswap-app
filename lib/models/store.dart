@@ -6,7 +6,7 @@ class Store {
   StoreLocation location;
   String address;
   int idCardNo;
-  int idCard;
+  String idCard;
   String idCardVerifiedAt;
   int status;
   int topSeller;
