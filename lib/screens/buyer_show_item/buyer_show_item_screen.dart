@@ -1,8 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:sell_or_swap/components/circle_menu_button.dart';
 import 'package:sell_or_swap/models/item.dart';
 import 'package:sell_or_swap/models/store.dart';
 import 'package:sell_or_swap/size_config.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class BuyerShowItemScreen extends StatelessWidget {
   final Item item;
@@ -79,10 +81,39 @@ class BuyerShowItemScreen extends StatelessWidget {
                         textAlign: TextAlign.justify,
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
+          )
+        ],
+      ),
+      bottomSheet: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          CircleMenuButton(
+            icon: Icons.phone,
+            title: "Call",
+            onTap: () async {
+              String url = 'tel:+22365985689';
+              if (await canLaunch(url)) {
+                await launch(url);
+              } else {
+                throw 'Could not launch $url';
+              }
+            },
+          ),
+          CircleMenuButton(
+            icon: Icons.message,
+            title: "Message",
+            onTap: () {
+              Navigator.pushNamed(context, '/chat', arguments: store);
+            },
+          ),
+          CircleMenuButton(
+            icon: Icons.directions,
+            title: "Direction",
+            onTap: () {},
           )
         ],
       ),

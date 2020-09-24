@@ -333,9 +333,11 @@ class _StoresMapScreenState extends State<StoresMapScreen> {
     if (_permissionGranted == PermissionStatus.denied) {
       _permissionGranted = await location.requestPermission();
       if (_permissionGranted != PermissionStatus.granted) {
+        if (mounted) setState(() {});
         return true;
       }
     } else if (_permissionGranted == PermissionStatus.granted) {
+      if (mounted) setState(() {});
       return true;
     }
     return false;
@@ -370,62 +372,98 @@ class _StoresMapScreenState extends State<StoresMapScreen> {
           ),
           Expanded(
             child: FutureBuilder<bool>(
-              future: handlePermission(),
+              future: location.serviceEnabled(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   if (snapshot.data) {
-                    return Stack(
+                    return FutureBuilder<PermissionStatus>(
+                      future: location.hasPermission(),
+                      builder: (context, permissionSnapshot) {
+                        switch (permissionSnapshot.data) {
+                          case PermissionStatus.granted:
+                            return Stack(
+                              children: [
+                                GoogleMap(
+                                  mapType: MapType.normal,
+                                  initialCameraPosition: CameraPosition(
+                                    target: LatLng(7.753121, -0.985663),
+                                    zoom: 15,
+                                  ),
+                                  myLocationEnabled: true,
+                                  myLocationButtonEnabled: true,
+                                  buildingsEnabled: true,
+                                  mapToolbarEnabled: true,
+                                  trafficEnabled: true,
+                                  padding:
+                                      EdgeInsets.only(bottom: getUiHeight(130)),
+                                  onMapCreated:
+                                      (GoogleMapController controller) {
+                                    _googleMapController = controller;
+                                    controller.setMapStyle(mapsStyle);
+                                    getNearStores();
+                                  },
+                                  markers: Set<Marker>.of(markers.values),
+                                ),
+                                Positioned(
+                                  bottom: 10,
+                                  left: 10,
+                                  right: 10,
+                                  height: getUiHeight(125),
+                                  child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: _stores.length,
+                                    itemBuilder: (context, index) {
+                                      return StoreMapCard(
+                                        controller: _googleMapController,
+                                        store: _stores[index],
+                                      );
+                                    },
+                                  ),
+                                )
+                              ],
+                            );
+                            break;
+                          case PermissionStatus.denied:
+                            return Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text("Permission not granted"),
+                                OutlineButton(
+                                  onPressed: () async {
+                                    await location.requestPermission();
+                                    setState(() {});
+                                  },
+                                  child: Text("Grant Permission"),
+                                )
+                              ],
+                            );
+                            break;
+                          default:
+                            return Center(
+                              child: Text("Unknown"),
+                            );
+                        }
+                      },
+                    );
+                  } else {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        GoogleMap(
-                          mapType: MapType.normal,
-                          initialCameraPosition: CameraPosition(
-                            target: LatLng(7.753121, -0.985663),
-                            zoom: 15,
-                          ),
-                          myLocationEnabled: true,
-                          myLocationButtonEnabled: true,
-                          buildingsEnabled: true,
-                          mapToolbarEnabled: true,
-                          trafficEnabled: true,
-                          padding: EdgeInsets.only(bottom: getUiHeight(130)),
-                          onMapCreated: (GoogleMapController controller) {
-                            _googleMapController = controller;
-                            controller.setMapStyle(mapsStyle);
-                            getNearStores();
+                        Text("Location Service not enable"),
+                        OutlineButton(
+                          onPressed: () async {
+                            if (!await location.serviceEnabled()) {
+                              await location.requestService();
+                              setState(() {});
+                            } else {
+                              setState(() {});
+                            }
                           },
-                          markers: Set<Marker>.of(markers.values),
-                        ),
-                        Positioned(
-                          bottom: 10,
-                          left: 10,
-                          right: 10,
-                          height: getUiHeight(125),
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: _stores.length,
-                            itemBuilder: (context, index) {
-                              return StoreMapCard(
-                                controller: _googleMapController,
-                                store: _stores[index],
-                              );
-                            },
-                          ),
+                          child: Text("Enable Service"),
                         )
                       ],
                     );
                   }
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text("Permission not granted"),
-                      OutlineButton(
-                        onPressed: () {
-                          setState(() {});
-                        },
-                        child: Text("Grant Permission"),
-                      )
-                    ],
-                  );
                 }
                 return Center(
                   child: CircularProgressIndicator(),

@@ -37,6 +37,7 @@ class CircleMenuButton extends StatelessWidget {
                 Center(
                   child: Text(
                     "$title",
+                    overflow: TextOverflow.ellipsis,
                     style: Theme.of(context)
                         .textTheme
                         .subtitle2

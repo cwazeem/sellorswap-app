@@ -58,6 +58,7 @@ class _SellerShopGridItemsState extends State<SellerShopGridItems> {
                 itemBuilder: (context, index) {
                   return ItemCard(
                     item: snapshot.data.data[index],
+                    store: widget.store,
                   );
                 },
               );
