@@ -6,7 +6,6 @@ import 'package:sell_or_swap/providers/auth_provider.dart';
 import 'package:share/share.dart';
 import 'components/seller_shop_items_grid.dart';
 import 'package:sell_or_swap/size_config.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'components/app_drawer.dart';
 
 class DashBoardScreen extends StatelessWidget {

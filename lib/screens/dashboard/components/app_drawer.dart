@@ -30,6 +30,72 @@ class AppDrawer extends StatelessWidget {
               ),
               ListTile(
                 title: Text(
+                  "Start Sell",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                trailing: Icon(Icons.exit_to_app),
+                onTap: () {
+                  Navigator.pop(context);
+                  Provider.of<AuthProvider>(context, listen: false).logout();
+                },
+              ),
+              ListTile(
+                title: Text(
+                  "View Stores",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                trailing: Icon(Icons.exit_to_app),
+                onTap: () {
+                  Navigator.pop(context);
+                  Provider.of<AuthProvider>(context, listen: false).logout();
+                },
+              ),
+              ListTile(
+                title: Text(
+                  "My Swaps",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                trailing: Icon(Icons.exit_to_app),
+                onTap: () {
+                  Navigator.pop(context);
+                  Provider.of<AuthProvider>(context, listen: false).logout();
+                },
+              ),
+              ListTile(
+                title: Text(
+                  "Messages",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                trailing: Icon(Icons.exit_to_app),
+                onTap: () {
+                  Navigator.pop(context);
+                  Provider.of<AuthProvider>(context, listen: false).logout();
+                },
+              ),
+              ListTile(
+                title: Text(
+                  "Profile",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                trailing: Icon(Icons.exit_to_app),
+                onTap: () {
+                  Navigator.pop(context);
+                  Provider.of<AuthProvider>(context, listen: false).logout();
+                },
+              ),
+              ListTile(
+                title: Text(
+                  "Share App",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                trailing: Icon(Icons.exit_to_app),
+                onTap: () {
+                  Navigator.pop(context);
+                  Provider.of<AuthProvider>(context, listen: false).logout();
+                },
+              ),
+              ListTile(
+                title: Text(
                   "Logout",
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
