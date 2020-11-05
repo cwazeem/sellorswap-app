@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sell_or_swap/providers/auth_provider.dart';
+import 'package:sell_or_swap/providers/auth_provider.dart';
 import 'package:sell_or_swap/size_config.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -11,7 +12,7 @@ class AppDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<AuthProvider>(
+    return Consumer<UserRepo>(
       builder: (context, value, child) {
         return Drawer(
           child: Column(
@@ -36,7 +37,6 @@ class AppDrawer extends StatelessWidget {
                 trailing: Icon(Icons.exit_to_app),
                 onTap: () {
                   Navigator.pop(context);
-                  Provider.of<AuthProvider>(context, listen: false).logout();
                 },
               ),
               ListTile(
@@ -47,7 +47,6 @@ class AppDrawer extends StatelessWidget {
                 trailing: Icon(Icons.exit_to_app),
                 onTap: () {
                   Navigator.pop(context);
-                  Provider.of<AuthProvider>(context, listen: false).logout();
                 },
               ),
               ListTile(
@@ -58,7 +57,6 @@ class AppDrawer extends StatelessWidget {
                 trailing: Icon(Icons.exit_to_app),
                 onTap: () {
                   Navigator.pop(context);
-                  Provider.of<AuthProvider>(context, listen: false).logout();
                 },
               ),
               ListTile(
@@ -69,7 +67,6 @@ class AppDrawer extends StatelessWidget {
                 trailing: Icon(Icons.exit_to_app),
                 onTap: () {
                   Navigator.pop(context);
-                  Provider.of<AuthProvider>(context, listen: false).logout();
                 },
               ),
               ListTile(
@@ -80,7 +77,6 @@ class AppDrawer extends StatelessWidget {
                 trailing: Icon(Icons.exit_to_app),
                 onTap: () {
                   Navigator.pop(context);
-                  Provider.of<AuthProvider>(context, listen: false).logout();
                 },
               ),
               ListTile(
@@ -91,7 +87,6 @@ class AppDrawer extends StatelessWidget {
                 trailing: Icon(Icons.exit_to_app),
                 onTap: () {
                   Navigator.pop(context);
-                  Provider.of<AuthProvider>(context, listen: false).logout();
                 },
               ),
               ListTile(
@@ -102,7 +97,6 @@ class AppDrawer extends StatelessWidget {
                 trailing: Icon(Icons.exit_to_app),
                 onTap: () {
                   Navigator.pop(context);
-                  Provider.of<AuthProvider>(context, listen: false).logout();
                 },
               )
             ],

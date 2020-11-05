@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
+import 'package:sell_or_swap/bloc/token_auth.dart';
 import 'package:sell_or_swap/components/default_button.dart';
 import 'package:sell_or_swap/constants.dart';
-import 'package:sell_or_swap/providers/auth_provider.dart';
 import 'package:sell_or_swap/size_config.dart';
 import 'package:sell_or_swap/repository/user_repository.dart';
 
@@ -34,7 +34,7 @@ class _SignInFormState extends State<SignInForm> {
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
-      autovalidate: _autoValidate,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       child: Column(
         children: [
           TextFormField(
@@ -97,30 +97,17 @@ class _SignInFormState extends State<SignInForm> {
             press: () async {
               if (_formKey.currentState.validate()) {
                 try {
-                  Map<String, dynamic> _response = await _userRepository.login({
-                    'email': _emailTextController.text,
-                    'password': _passwordTextController.text
-                  });
-                  if (_response.containsKey('status') && _response['status']) {
-                    await Provider.of<AuthProvider>(context, listen: false)
-                        .doLogin(_response);
-                    Navigator.of(context).popUntil((route) => route.isFirst);
-                  } else {
-                    var snackbar = SnackBar(
-                      content: Text("Username or password not match"),
-                    );
-                    widget.scaffoldKey.currentState.showSnackBar(snackbar);
-                  }
+                  await Auth().login(
+                      _emailTextController.text, _passwordTextController.text);
+                  Navigator.of(context).popUntil((route) => route.isFirst);
                 } catch (e) {
-                  var snackbar = SnackBar(
-                    content: Text("$e"),
+                  Get.snackbar(
+                    "Error!",
+                    "$e",
+                    snackPosition: SnackPosition.BOTTOM,
+                    backgroundColor: Colors.red.withOpacity(0.3),
                   );
-                  widget.scaffoldKey.currentState.showSnackBar(snackbar);
                 }
-              } else {
-                setState(() {
-                  _autoValidate = true;
-                });
               }
             },
           ),

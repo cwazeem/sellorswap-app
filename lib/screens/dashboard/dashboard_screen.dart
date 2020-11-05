@@ -15,7 +15,7 @@ class DashBoardScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(),
       drawer: AppDrawer(),
-      body: Consumer<AuthProvider>(
+      body: Consumer<UserRepo>(
         builder: (context, auth, child) {
           return Padding(
             padding: const EdgeInsets.all(15.0),

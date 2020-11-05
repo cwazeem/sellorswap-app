@@ -1,14 +1,11 @@
 import 'dart:convert';
-
 import 'package:sell_or_swap/models/user.dart';
-import 'package:sell_or_swap/networking/api_provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:sell_or_swap/networking/rest_api.dart';
 
 class UserRepository {
-  ApiProvider _provider = ApiProvider();
-
   Future<Map<String, dynamic>> login(dynamic body) async {
-    final response = await _provider.post("/login", body);
+    final response = await RestApi().post("/login", body);
     return response;
   }
 
