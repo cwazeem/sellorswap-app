@@ -42,6 +42,7 @@ class Auth {
       var response = await RestApi()
           .post("/login", {'email': email, 'password': password});
       if (response.containsKey('status') && response['status']) {
+        print("${response['data']['token']}");
         updateUser(response['data']['user']);
         _sp.setString('token', response['data']['token']);
       } else {
@@ -69,8 +70,8 @@ class Auth {
   }
 
   void updateUser(Map<String, dynamic> user) async {
-    _user = User.fromJson(user['data']['user']);
-    _sp.setString('user', jsonEncode(user['data']['user']));
+    _user = User.fromJson(user);
+    _sp.setString('user', jsonEncode(user));
     _userStreamController.sink.add(_user);
   }
 }

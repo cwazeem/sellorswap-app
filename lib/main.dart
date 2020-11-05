@@ -6,7 +6,6 @@ import 'package:sell_or_swap/routes.dart';
 import 'package:sell_or_swap/screens/dashboard/dashboard_screen.dart';
 import 'package:sell_or_swap/screens/onboarding/onboard_screen.dart';
 import 'package:sell_or_swap/screens/signin/signin_screen.dart';
-import 'package:sell_or_swap/screens/stores_map/stores_map_screen.dart';
 import 'package:sell_or_swap/size_config.dart';
 import 'package:sell_or_swap/theme.dart';
 

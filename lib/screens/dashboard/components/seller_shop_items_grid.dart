@@ -24,7 +24,7 @@ class _SellerShopGridItemsState extends State<SellerShopGridItems> {
   @override
   void initState() {
     super.initState();
-    _storeItemsBloc = StoreItemsBloc(widget.store.id);
+    _storeItemsBloc = StoreItemsBloc(widget.store.id ?? "");
   }
 
   @override

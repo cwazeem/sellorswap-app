@@ -2,8 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sell_or_swap/providers/auth_provider.dart';
-import 'package:sell_or_swap/providers/auth_provider.dart';
 import 'package:sell_or_swap/size_config.dart';
+import 'package:sell_or_swap/bloc/token_auth.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({
@@ -97,6 +97,7 @@ class AppDrawer extends StatelessWidget {
                 trailing: Icon(Icons.exit_to_app),
                 onTap: () {
                   Navigator.pop(context);
+                  Auth().logout();
                 },
               )
             ],

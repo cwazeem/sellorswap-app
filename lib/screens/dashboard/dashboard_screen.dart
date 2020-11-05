@@ -33,7 +33,7 @@ class DashBoardScreen extends StatelessWidget {
                               borderRadius:
                                   BorderRadius.circular(getUiWidth(10)),
                               child: CachedNetworkImage(
-                                imageUrl: auth.user.store.logo,
+                                imageUrl: auth.user.avatar,
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -42,7 +42,7 @@ class DashBoardScreen extends StatelessWidget {
                           Column(
                             children: [
                               Text(
-                                auth.user.store.name ?? "",
+                                auth.user.name ?? "",
                                 style: Theme.of(context).textTheme.headline4,
                               ),
                               Row(
@@ -57,7 +57,7 @@ class DashBoardScreen extends StatelessWidget {
                                     icon: Icon(Icons.share),
                                     onPressed: () {
                                       Share.share(
-                                          "Here is my store link https://sellorswap.place/store/${auth.user.store.id}");
+                                          "Here is my store link https://sellorswap.place/store/${auth.user.id}");
                                     },
                                   ),
                                 ],
