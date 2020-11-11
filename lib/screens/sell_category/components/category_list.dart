@@ -3,7 +3,7 @@ import 'package:sell_or_swap/constants.dart';
 import 'package:sell_or_swap/models/category.dart';
 
 class CategoryList extends StatelessWidget {
-  final List<AppCategory> categories;
+  final List<ItemCategory> categories;
 
   const CategoryList({Key key, this.categories}) : super(key: key);
   @override

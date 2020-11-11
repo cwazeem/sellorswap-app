@@ -27,7 +27,7 @@ class _SellCategoryScreenState extends State<SellCategoryScreen> {
           style: Theme.of(context).textTheme.headline5,
         ),
       ),
-      body: StreamBuilder<Response<List<AppCategory>>>(
+      body: StreamBuilder<Response<List<ItemCategory>>>(
         stream: _categoriesBloc.categoriesListStream,
         builder: (context, snapshot) {
           if (snapshot.hasData) {

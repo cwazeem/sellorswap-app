@@ -1,16 +1,20 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sell_or_swap/components/default_button.dart';
 import 'package:sell_or_swap/constants.dart';
 import 'package:sell_or_swap/models/category.dart';
+import 'package:sell_or_swap/networking/rest_api.dart';
 import 'package:sell_or_swap/screens/add_sell_item/components/pick_image_option.dart';
 import 'package:sell_or_swap/screens/add_sell_item/components/sell_item_form.dart';
 import 'package:sell_or_swap/size_config.dart';
+import 'package:sell_or_swap/bloc/token_auth.dart';
 
 class AddSellItem extends StatefulWidget {
-  final AppCategory category;
+  final ItemCategory category;
 
   const AddSellItem({Key key, this.category}) : super(key: key);
   @override
@@ -18,7 +22,7 @@ class AddSellItem extends StatefulWidget {
 }
 
 class _AddSellItemState extends State<AddSellItem> {
-  final _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormBuilderState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   File _image;
   final picker = ImagePicker();
@@ -29,78 +33,97 @@ class _AddSellItemState extends State<AddSellItem> {
       appBar: AppBar(
         title: Text("Add Item"),
       ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: getUiWidth(20)),
-        child: ListView(
-          shrinkWrap: true,
-          children: [
-            SizedBox(height: getUiHeight(20)),
-            Center(
-              child: Text(
-                "${widget.category.name}",
-                style: TextStyle(
-                  color: kPrimaryColor,
-                  fontSize: getUiWidth(28),
-                  fontWeight: FontWeight.bold,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: getUiWidth(20)),
+          child: Column(
+            children: [
+              SizedBox(height: getUiHeight(10)),
+              Center(
+                child: Text(
+                  "${widget.category.name}",
+                  style: TextStyle(
+                    color: kPrimaryColor,
+                    fontSize: getUiWidth(28),
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-                textAlign: TextAlign.center,
               ),
-            ),
-            Center(
-              child: Text(
-                "You are inserted item in the this category",
-                textAlign: TextAlign.center,
+              Center(
+                child: Text(
+                  "You are inserted item in the this category",
+                  textAlign: TextAlign.center,
+                ),
               ),
-            ),
-            SizedBox(height: getUiHeight(20)),
-            Form(
-              key: _formKey,
-              child: SellItemForm(),
-            ),
-            SizedBox(height: getUiHeight(20)),
-            Container(
-              height: getUiHeight(200),
-              decoration: BoxDecoration(
-                color: kPrimaryColor.withOpacity(0.3),
-                borderRadius: BorderRadius.circular(10),
+              SizedBox(height: getUiHeight(20)),
+              FormBuilder(
+                key: _formKey,
+                child: SellItemForm(),
               ),
-              child: Center(
-                child: _image != null
-                    ? Image.file(_image)
-                    : OutlineButton(
-                        child: Text("Select Image"),
-                        onPressed: selectIamge,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+              SizedBox(height: getUiHeight(20)),
+              Container(
+                height: getUiHeight(200),
+                decoration: BoxDecoration(
+                  color: kPrimaryColor.withOpacity(0.3),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Center(
+                  child: _image != null
+                      ? Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Image.file(
+                            _image,
+                            fit: BoxFit.contain,
+                          ),
+                        )
+                      : OutlineButton(
+                          child: Text("Select Image"),
+                          onPressed: selectIamge,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                         ),
-                      ),
+                ),
               ),
-            ),
-            SizedBox(height: getUiHeight(20)),
-            DefaultButton(
-              text: "Continue",
-              press: () {
-                if (_formKey.currentState.validate()) {
-                  _formKey.currentState.save();
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return SimpleDialog(
-                        title: Text("Success!"),
-                        children: [
-                          Container(
-                            child: Center(
-                              child: Text("Successfully Added"),
-                            ),
-                          )
-                        ],
-                      );
-                    },
-                  );
-                }
-              },
-            )
-          ],
+              SizedBox(height: getUiHeight(20)),
+              DefaultButton(
+                text: "Continue",
+                press: () async {
+                  try {
+                    if (_formKey.currentState.saveAndValidate()) {
+                      var data = _formKey.currentState.value;
+                      String url = await RestApi().uploadImage(_image);
+                      data['image'] = url;
+                      data['category_id'] = widget.category.id.toString();
+                      String storeId = Auth().currentUser.store.id.toString();
+                      Map response =
+                          await RestApi().post("/store/$storeId/item", data);
+                      if (response.containsKey('status') &&
+                          response['status']) {
+                        Get.snackbar(
+                          'Success',
+                          'Item added successfully',
+                          snackPosition: SnackPosition.BOTTOM,
+                        );
+                        setState(() {
+                          _formKey.currentState.reset();
+                          _image = null;
+                        });
+                      }
+                    }
+                  } catch (e) {
+                    Get.snackbar(
+                      'Error!',
+                      "$e",
+                      snackPosition: SnackPosition.BOTTOM,
+                      backgroundColor: Colors.red.withOpacity(0.5),
+                    );
+                  }
+                },
+              )
+            ],
+          ),
         ),
       ),
     );

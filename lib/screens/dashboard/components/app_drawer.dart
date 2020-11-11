@@ -1,9 +1,12 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:sell_or_swap/providers/auth_provider.dart';
-import 'package:sell_or_swap/size_config.dart';
+import 'package:sell_or_swap/screens/create_store/picklocation/pickup_address.dart';
 import 'package:sell_or_swap/bloc/token_auth.dart';
+import 'package:sell_or_swap/components/cache_image.dart';
+import 'package:sell_or_swap/screens/stores_map/stores_map_screen.dart';
+import 'package:sell_or_swap/screens/store/store/store_screen.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({
@@ -18,10 +21,8 @@ class AppDrawer extends StatelessWidget {
           child: Column(
             children: [
               UserAccountsDrawerHeader(
-                currentAccountPicture: ClipRRect(
-                  borderRadius: BorderRadius.circular(getUiWidth(10)),
-                  child: CachedNetworkImage(imageUrl: "${value.user.avatar}"),
-                ),
+                currentAccountPicture:
+                    CustomeCacheImage(image: value.user.avatar),
                 accountName: Text(
                   "${value.user.name}",
                   overflow: TextOverflow.ellipsis,
@@ -37,6 +38,11 @@ class AppDrawer extends StatelessWidget {
                 trailing: Icon(Icons.exit_to_app),
                 onTap: () {
                   Navigator.pop(context);
+                  if (value.user.store == null) {
+                    Get.to(StoreLocationPickupScreen());
+                  } else {
+                    Get.to(StoreScreen());
+                  }
                 },
               ),
               ListTile(
@@ -47,6 +53,7 @@ class AppDrawer extends StatelessWidget {
                 trailing: Icon(Icons.exit_to_app),
                 onTap: () {
                   Navigator.pop(context);
+                  Get.to(StoresMapScreen());
                 },
               ),
               ListTile(

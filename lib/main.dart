@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:sell_or_swap/networking/rest_api.dart';
 import 'package:sell_or_swap/providers/auth_provider.dart';
 import 'package:sell_or_swap/routes.dart';
 import 'package:sell_or_swap/screens/dashboard/dashboard_screen.dart';
@@ -9,7 +10,9 @@ import 'package:sell_or_swap/screens/signin/signin_screen.dart';
 import 'package:sell_or_swap/size_config.dart';
 import 'package:sell_or_swap/theme.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  RestApi();
   runApp(MyApp());
 }
 

@@ -4,12 +4,11 @@ import 'package:provider/provider.dart';
 import 'package:sell_or_swap/components/circle_menu_button.dart';
 import 'package:sell_or_swap/providers/auth_provider.dart';
 import 'package:share/share.dart';
-import 'components/seller_shop_items_grid.dart';
 import 'package:sell_or_swap/size_config.dart';
+
 import 'components/app_drawer.dart';
 
 class DashBoardScreen extends StatelessWidget {
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +32,8 @@ class DashBoardScreen extends StatelessWidget {
                               borderRadius:
                                   BorderRadius.circular(getUiWidth(10)),
                               child: CachedNetworkImage(
-                                imageUrl: auth.user.avatar,
+                                imageUrl: auth.user.avatar ??
+                                    "https://randomuser.me/api/portraits/men/2.jpg",
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -109,9 +109,9 @@ class DashBoardScreen extends StatelessWidget {
                 SizedBox(
                   height: getUiHeight(20),
                 ),
-                Expanded(
-                  child: SellerShopGridItems(store: auth.user.store),
-                )
+                // Expanded(
+                //   child: SellerShopGridItems(store: auth.user.store),
+                // )
               ],
             ),
           );

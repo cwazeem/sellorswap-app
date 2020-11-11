@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:sell_or_swap/bloc/token_auth.dart';
 import 'package:sell_or_swap/components/default_button.dart';
 import 'package:sell_or_swap/components/have_account_text.dart';
 import 'package:sell_or_swap/constants.dart';
@@ -12,9 +14,7 @@ class SignupScreen extends StatefulWidget {
 
 class _SignupScreenState extends State<SignupScreen> {
   // Ui Variables
-  final _formKey = GlobalKey<FormState>();
-
-  bool _formAutoValidate = false;
+  final _fbKey = GlobalKey<FormBuilderState>();
 
   @override
   Widget build(BuildContext context) {
@@ -41,21 +41,22 @@ class _SignupScreenState extends State<SignupScreen> {
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: getUiHeight(20)),
-                  Form(
-                    key: _formKey,
-                    autovalidate: _formAutoValidate,
+                  FormBuilder(
+                    key: _fbKey,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     child: SignupForm(),
                   ),
                   SizedBox(height: getUiHeight(20)),
                   DefaultButton(
                     text: "Register",
-                    press: () {
-                      if (_formKey.currentState.validate()) {
-                      } else {
-                        setState(() {
-                          _formAutoValidate = true;
-                        });
-                      }
+                    press: () async {
+                      try {
+                        if (_fbKey.currentState.saveAndValidate()) {
+                          print(_fbKey.currentState.value);
+                          var data = _fbKey.currentState.value;
+                          await Auth().register(data, context);
+                        }
+                      } catch (e) {}
                     },
                   ),
                   SizedBox(height: getUiHeight(20)),

@@ -1,10 +1,10 @@
-class AppCategory {
+class ItemCategory {
   int id;
   String name;
 
-  AppCategory({this.id, this.name});
+  ItemCategory({this.id, this.name});
 
-  AppCategory.fromJson(Map<String, dynamic> json) {
+  ItemCategory.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
   }

@@ -21,7 +21,6 @@ class _SignInFormState extends State<SignInForm> {
   final _passwordTextController = TextEditingController();
   bool _remember = false;
 
-  bool _autoValidate = false;
   // Database API Objects
   UserRepository _userRepository;
   @override
@@ -97,9 +96,8 @@ class _SignInFormState extends State<SignInForm> {
             press: () async {
               if (_formKey.currentState.validate()) {
                 try {
-                  await Auth().login(
-                      _emailTextController.text, _passwordTextController.text);
-                  Navigator.of(context).popUntil((route) => route.isFirst);
+                  await Auth().login(_emailTextController.text,
+                      _passwordTextController.text, context);
                 } catch (e) {
                   Get.snackbar(
                     "Error!",

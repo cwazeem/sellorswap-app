@@ -7,14 +7,14 @@ class CategoriesBloc {
   CategoryRepository _categoryRepository;
   StreamController _categoryStreamController;
 
-  StreamSink<Response<List<AppCategory>>> get categorySink =>
+  StreamSink<Response<List<ItemCategory>>> get categorySink =>
       _categoryStreamController.sink;
-  Stream<Response<List<AppCategory>>> get categoriesListStream =>
+  Stream<Response<List<ItemCategory>>> get categoriesListStream =>
       _categoryStreamController.stream;
 
   CategoriesBloc() {
     _categoryStreamController =
-        StreamController<Response<List<AppCategory>>>.broadcast();
+        StreamController<Response<List<ItemCategory>>>.broadcast();
     _categoryRepository = CategoryRepository();
     getUsers();
   }

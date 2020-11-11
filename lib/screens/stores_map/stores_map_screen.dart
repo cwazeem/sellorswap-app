@@ -7,289 +7,8 @@ import 'package:sell_or_swap/models/store.dart';
 import 'package:sell_or_swap/repository/store_repository.dart';
 import 'package:sell_or_swap/screens/stores_map/components/app_drawer.dart';
 import 'package:sell_or_swap/size_config.dart';
-
+import 'package:sell_or_swap/models/maps_helper.dart';
 import 'components/store_map_card.dart';
-
-String mapsStyle = '''[  {
-    "featureType": "administrative",
-    "elementType": "geometry.fill",
-    "stylers": [
-      {
-        "color": "#d6e2e6"
-      }
-    ]
-  },
-  {
-    "featureType": "administrative",
-    "elementType": "geometry.stroke",
-    "stylers": [
-      {
-        "color": "#cfd4d5"
-      }
-    ]
-  },
-  {
-    "featureType": "administrative",
-    "elementType": "labels.text.fill",
-    "stylers": [
-      {
-        "color": "#7492a8"
-      }
-    ]
-  },
-  {
-    "featureType": "administrative.neighborhood",
-    "elementType": "labels.text.fill",
-    "stylers": [
-      {
-        "lightness": 25
-      }
-    ]
-  },
-  {
-    "featureType": "landscape.man_made",
-    "elementType": "geometry.fill",
-    "stylers": [
-      {
-        "color": "#dde2e3"
-      }
-    ]
-  },
-  {
-    "featureType": "landscape.man_made",
-    "elementType": "geometry.stroke",
-    "stylers": [
-      {
-        "color": "#cfd4d5"
-      }
-    ]
-  },
-  {
-    "featureType": "landscape.natural",
-    "elementType": "geometry.fill",
-    "stylers": [
-      {
-        "color": "#dde2e3"
-      }
-    ]
-  },
-  {
-    "featureType": "landscape.natural",
-    "elementType": "labels.text.fill",
-    "stylers": [
-      {
-        "color": "#7492a8"
-      }
-    ]
-  },
-  {
-    "featureType": "landscape.natural.terrain",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "poi",
-    "elementType": "geometry.fill",
-    "stylers": [
-      {
-        "color": "#dde2e3"
-      }
-    ]
-  },
-  {
-    "featureType": "poi",
-    "elementType": "labels.icon",
-    "stylers": [
-      {
-        "saturation": -100
-      }
-    ]
-  },
-  {
-    "featureType": "poi",
-    "elementType": "labels.text.fill",
-    "stylers": [
-      {
-        "color": "#588ca4"
-      }
-    ]
-  },
-  {
-    "featureType": "poi.park",
-    "elementType": "geometry.fill",
-    "stylers": [
-      {
-        "color": "#a9de83"
-      }
-    ]
-  },
-  {
-    "featureType": "poi.park",
-    "elementType": "geometry.stroke",
-    "stylers": [
-      {
-        "color": "#bae6a1"
-      }
-    ]
-  },
-  {
-    "featureType": "poi.sports_complex",
-    "elementType": "geometry.fill",
-    "stylers": [
-      {
-        "color": "#c6e8b3"
-      }
-    ]
-  },
-  {
-    "featureType": "poi.sports_complex",
-    "elementType": "geometry.stroke",
-    "stylers": [
-      {
-        "color": "#bae6a1"
-      }
-    ]
-  },
-  {
-    "featureType": "road",
-    "elementType": "labels.icon",
-    "stylers": [
-      {
-        "saturation": -45
-      },
-      {
-        "lightness": 10
-      },
-      {
-        "visibility": "on"
-      }
-    ]
-  },
-  {
-    "featureType": "road",
-    "elementType": "labels.text.fill",
-    "stylers": [
-      {
-        "color": "#41626b"
-      }
-    ]
-  },
-  {
-    "featureType": "road.arterial",
-    "elementType": "geometry.fill",
-    "stylers": [
-      {
-        "color": "#ffffff"
-      }
-    ]
-  },
-  {
-    "featureType": "road.highway",
-    "elementType": "geometry.fill",
-    "stylers": [
-      {
-        "color": "#c1d1d6"
-      }
-    ]
-  },
-  {
-    "featureType": "road.highway",
-    "elementType": "geometry.stroke",
-    "stylers": [
-      {
-        "color": "#a6b5bb"
-      }
-    ]
-  },
-  {
-    "featureType": "road.highway",
-    "elementType": "labels.icon",
-    "stylers": [
-      {
-        "visibility": "on"
-      }
-    ]
-  },
-  {
-    "featureType": "road.highway.controlled_access",
-    "elementType": "geometry.fill",
-    "stylers": [
-      {
-        "color": "#9fb6bd"
-      }
-    ]
-  },
-  {
-    "featureType": "road.local",
-    "elementType": "geometry.fill",
-    "stylers": [
-      {
-        "color": "#ffffff"
-      }
-    ]
-  },
-  {
-    "featureType": "transit",
-    "elementType": "labels.icon",
-    "stylers": [
-      {
-        "saturation": -70
-      }
-    ]
-  },
-  {
-    "featureType": "transit.line",
-    "elementType": "geometry.fill",
-    "stylers": [
-      {
-        "color": "#b4cbd4"
-      }
-    ]
-  },
-  {
-    "featureType": "transit.line",
-    "elementType": "labels.text.fill",
-    "stylers": [
-      {
-        "color": "#588ca4"
-      }
-    ]
-  },
-  {
-    "featureType": "transit.station",
-    "elementType": "labels.text.fill",
-    "stylers": [
-      {
-        "color": "#008cb5"
-      }
-    ]
-  },
-  {
-    "featureType": "transit.station.airport",
-    "elementType": "geometry.fill",
-    "stylers": [
-      {
-        "saturation": -100
-      },
-      {
-        "lightness": -5
-      }
-    ]
-  },
-  {
-    "featureType": "water",
-    "elementType": "geometry.fill",
-    "stylers": [
-      {
-        "color": "#a6cbe3"
-      }
-    ]
-  }
-]
-''';
 
 class StoresMapScreen extends StatefulWidget {
   static const String name = "storesMapScreen";
@@ -356,122 +75,124 @@ class _StoresMapScreenState extends State<StoresMapScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Stores"),
-        centerTitle: true,
-      ),
-      drawer: AppDrawer(),
-      body: Column(
-        children: [
-          Container(
-            width: double.infinity,
-            padding: EdgeInsets.all(getUiWidth(30)),
-            decoration: BoxDecoration(color: Colors.white),
-            child: Center(child: Text("BANNER")),
-          ),
-          Expanded(
-            child: FutureBuilder<bool>(
-              future: location.serviceEnabled(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  if (snapshot.data) {
-                    return FutureBuilder<PermissionStatus>(
-                      future: location.hasPermission(),
-                      builder: (context, permissionSnapshot) {
-                        switch (permissionSnapshot.data) {
-                          case PermissionStatus.granted:
-                            return Stack(
-                              children: [
-                                GoogleMap(
-                                  mapType: MapType.normal,
-                                  initialCameraPosition: CameraPosition(
-                                    target: LatLng(7.753121, -0.985663),
-                                    zoom: 15,
-                                  ),
-                                  myLocationEnabled: true,
-                                  myLocationButtonEnabled: true,
-                                  buildingsEnabled: true,
-                                  mapToolbarEnabled: true,
-                                  trafficEnabled: true,
-                                  padding:
-                                      EdgeInsets.only(bottom: getUiHeight(130)),
-                                  onMapCreated:
-                                      (GoogleMapController controller) {
-                                    _googleMapController = controller;
-                                    controller.setMapStyle(mapsStyle);
-                                    getNearStores();
-                                  },
-                                  markers: Set<Marker>.of(markers.values),
-                                ),
-                                Positioned(
-                                  bottom: 10,
-                                  left: 10,
-                                  right: 10,
-                                  height: getUiHeight(125),
-                                  child: ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: _stores.length,
-                                    itemBuilder: (context, index) {
-                                      return StoreMapCard(
-                                        controller: _googleMapController,
-                                        store: _stores[index],
-                                      );
-                                    },
-                                  ),
-                                )
-                              ],
-                            );
-                            break;
-                          case PermissionStatus.denied:
-                            return Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text("Permission not granted"),
-                                OutlineButton(
-                                  onPressed: () async {
-                                    await location.requestPermission();
-                                    setState(() {});
-                                  },
-                                  child: Text("Grant Permission"),
-                                )
-                              ],
-                            );
-                            break;
-                          default:
-                            return Center(
-                              child: Text("Unknown"),
-                            );
-                        }
-                      },
-                    );
-                  } else {
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text("Location Service not enable"),
-                        OutlineButton(
-                          onPressed: () async {
-                            if (!await location.serviceEnabled()) {
-                              await location.requestService();
-                              setState(() {});
-                            } else {
-                              setState(() {});
-                            }
-                          },
-                          child: Text("Enable Service"),
-                        )
-                      ],
-                    );
-                  }
-                }
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              },
+    return Container(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("Stores"),
+          centerTitle: true,
+        ),
+        drawer: AppDrawer(),
+        body: Column(
+          children: [
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.all(getUiWidth(30)),
+              decoration: BoxDecoration(color: Colors.white),
+              child: Center(child: Text("BANNER")),
             ),
-          ),
-        ],
+            Expanded(
+              child: FutureBuilder<bool>(
+                future: location.serviceEnabled(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    if (snapshot.data) {
+                      return FutureBuilder<PermissionStatus>(
+                        future: location.hasPermission(),
+                        builder: (context, permissionSnapshot) {
+                          switch (permissionSnapshot.data) {
+                            case PermissionStatus.granted:
+                              return Stack(
+                                children: [
+                                  GoogleMap(
+                                    mapType: MapType.normal,
+                                    initialCameraPosition: CameraPosition(
+                                      target: LatLng(7.753121, -0.985663),
+                                      zoom: 15,
+                                    ),
+                                    myLocationEnabled: true,
+                                    myLocationButtonEnabled: true,
+                                    buildingsEnabled: true,
+                                    mapToolbarEnabled: true,
+                                    trafficEnabled: true,
+                                    padding: EdgeInsets.only(
+                                        bottom: getUiHeight(130)),
+                                    onMapCreated:
+                                        (GoogleMapController controller) {
+                                      _googleMapController = controller;
+                                      controller.setMapStyle(mapsStyle);
+                                      getNearStores();
+                                    },
+                                    markers: Set<Marker>.of(markers.values),
+                                  ),
+                                  Positioned(
+                                    bottom: 10,
+                                    left: 10,
+                                    right: 10,
+                                    height: getUiHeight(125),
+                                    child: ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: _stores.length,
+                                      itemBuilder: (context, index) {
+                                        return StoreMapCard(
+                                          controller: _googleMapController,
+                                          store: _stores[index],
+                                        );
+                                      },
+                                    ),
+                                  )
+                                ],
+                              );
+                              break;
+                            case PermissionStatus.denied:
+                              return Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text("Permission not granted"),
+                                  OutlineButton(
+                                    onPressed: () async {
+                                      await location.requestPermission();
+                                      setState(() {});
+                                    },
+                                    child: Text("Grant Permission"),
+                                  )
+                                ],
+                              );
+                              break;
+                            default:
+                              return Center(
+                                child: Text("Unknown"),
+                              );
+                          }
+                        },
+                      );
+                    } else {
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("Location Service not enable"),
+                          OutlineButton(
+                            onPressed: () async {
+                              if (!await location.serviceEnabled()) {
+                                await location.requestService();
+                                setState(() {});
+                              } else {
+                                setState(() {});
+                              }
+                            },
+                            child: Text("Enable Service"),
+                          )
+                        ],
+                      );
+                    }
+                  }
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

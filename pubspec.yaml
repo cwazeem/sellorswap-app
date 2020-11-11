@@ -43,6 +43,7 @@ dependencies:
   permission_handler: ^5.0.1+1
   get: ^3.15.0
   flutter_form_builder: ^3.14.1
+  dio: ^3.0.10
 
   # Google Services
   google_maps_flutter: ^1.0.6
