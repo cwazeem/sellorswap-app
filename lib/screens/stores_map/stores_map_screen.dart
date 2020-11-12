@@ -75,14 +75,9 @@ class _StoresMapScreenState extends State<StoresMapScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text("Stores"),
-          centerTitle: true,
-        ),
-        drawer: AppDrawer(),
-        body: Column(
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
           children: [
             Container(
               width: double.infinity,
@@ -120,7 +115,7 @@ class _StoresMapScreenState extends State<StoresMapScreen> {
                                         (GoogleMapController controller) {
                                       _googleMapController = controller;
                                       controller.setMapStyle(mapsStyle);
-                                      getNearStores();
+                                      getNearStores(7.753121, -0.985663);
                                     },
                                     markers: Set<Marker>.of(markers.values),
                                   ),
@@ -197,7 +192,7 @@ class _StoresMapScreenState extends State<StoresMapScreen> {
     );
   }
 
-  Future<void> getNearStores() async {
+  Future<void> getNearStores(double lat, double lng) async {
     List<Store> stores = await _storeRepository.getNearStore(0.0, 0.0, 10);
     setState(() {
       _stores = stores;

@@ -3,12 +3,10 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:sell_or_swap/bloc/token_auth.dart';
 import 'package:sell_or_swap/components/background_tile.dart';
 import 'package:sell_or_swap/components/list_menu_tile.dart';
 import 'package:sell_or_swap/models/user.dart';
-import 'package:sell_or_swap/networking/rest_api.dart';
 import 'package:sell_or_swap/screens/profile/profile_screen.dart';
 import 'package:sell_or_swap/screens/sell_category/sell_categories_screen.dart';
 import 'package:sell_or_swap/size_config.dart';
@@ -32,6 +30,7 @@ class StoreScreen extends StatelessWidget {
                 children: [
                   Container(
                     margin: EdgeInsets.only(top: getUiHeight(25)),
+                    width: double.infinity,
                     child: BackgroundTile(
                       child: Container(
                         margin: EdgeInsets.only(top: getUiHeight(20)),

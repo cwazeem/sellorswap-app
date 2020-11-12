@@ -39,9 +39,13 @@ class Auth {
   }
 
   Future<void> refreshUser() async {
-    var response = await RestApi().get('/user', isAuth: true);
-    if (response != null) {
-      updateUser(response);
+    try {
+      var response = await RestApi().get('/user', isAuth: true);
+      if (response != null) {
+        updateUser(response);
+      }
+    } catch (e) {
+      printError(info: e);
     }
   }
 
