@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sell_or_swap/screens/add_sell_item/add_sell_item.dart';
 import 'package:sell_or_swap/screens/buyer_show_item/buyer_show_item_screen.dart';
 import 'package:sell_or_swap/screens/chat/chat_screen.dart';
 import 'package:sell_or_swap/screens/chat_home/chat_home_screen.dart';
@@ -10,6 +9,7 @@ import 'package:sell_or_swap/screens/seller_shop/seller_shop_screen.dart';
 import 'package:sell_or_swap/screens/selling/selling_screen.dart';
 import 'package:sell_or_swap/screens/signin/signin_screen.dart';
 import 'package:sell_or_swap/screens/signup/signup_screen.dart';
+import 'package:sell_or_swap/screens/store/item/store_item_create.dart';
 import 'package:sell_or_swap/screens/stores_map/stores_map_screen.dart';
 
 class RouterGenerator {
@@ -40,7 +40,7 @@ class RouterGenerator {
         return MaterialPageRoute(builder: (_) => SellCategoryScreen());
       case '/addSellItemForm':
         return MaterialPageRoute(
-          builder: (_) => AddSellItem(
+          builder: (_) => StoreItemCreateScreen(
             category: args,
           ),
         );

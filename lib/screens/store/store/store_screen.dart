@@ -9,6 +9,7 @@ import 'package:sell_or_swap/components/list_menu_tile.dart';
 import 'package:sell_or_swap/models/user.dart';
 import 'package:sell_or_swap/screens/profile/profile_screen.dart';
 import 'package:sell_or_swap/screens/sell_category/sell_categories_screen.dart';
+import 'package:sell_or_swap/screens/store/item/store_item_index.dart';
 import 'package:sell_or_swap/size_config.dart';
 
 class StoreScreen extends StatelessWidget {
@@ -116,7 +117,7 @@ class StoreScreen extends StatelessWidget {
                     title: "Edit",
                     subTitle: "Edit products",
                     icon: Icons.edit,
-                    // onTap: () => Get.to(HistoryDatesScreen()),
+                    onTap: () => Get.to(StoreItemIndex()),
                   ),
                   ListMenuTile(
                     title: "Store Update",

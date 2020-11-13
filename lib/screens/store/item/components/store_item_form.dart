@@ -2,13 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:sell_or_swap/size_config.dart';
 
-class SellItemForm extends StatefulWidget {
-  @override
-  _SignupFormState createState() => _SignupFormState();
-}
-
-class _SignupFormState extends State<SellItemForm> {
-  @override
+class StoreItemForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [

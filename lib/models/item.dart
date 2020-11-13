@@ -34,7 +34,7 @@ class Item {
     categoryId = json['category_id'];
     name = json['name'];
     description = json['description'];
-    price = json['price'];
+    price = json['price'].toDouble();
     status = json['status'];
     condition = json['condition'];
     image = json['image'];

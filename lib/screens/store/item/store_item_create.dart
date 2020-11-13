@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:get/get.dart';
@@ -8,20 +7,20 @@ import 'package:sell_or_swap/components/default_button.dart';
 import 'package:sell_or_swap/constants.dart';
 import 'package:sell_or_swap/models/category.dart';
 import 'package:sell_or_swap/networking/rest_api.dart';
-import 'package:sell_or_swap/screens/add_sell_item/components/pick_image_option.dart';
-import 'package:sell_or_swap/screens/add_sell_item/components/sell_item_form.dart';
-import 'package:sell_or_swap/size_config.dart';
 import 'package:sell_or_swap/bloc/token_auth.dart';
+import 'package:sell_or_swap/size_config.dart';
+import 'components/pick_image_option.dart';
+import 'components/store_item_form.dart';
 
-class AddSellItem extends StatefulWidget {
+class StoreItemCreateScreen extends StatefulWidget {
   final ItemCategory category;
 
-  const AddSellItem({Key key, this.category}) : super(key: key);
+  const StoreItemCreateScreen({Key key, this.category}) : super(key: key);
   @override
-  _AddSellItemState createState() => _AddSellItemState();
+  _StoreItemCreateScreenState createState() => _StoreItemCreateScreenState();
 }
 
-class _AddSellItemState extends State<AddSellItem> {
+class _StoreItemCreateScreenState extends State<StoreItemCreateScreen> {
   final _formKey = GlobalKey<FormBuilderState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   File _image;
@@ -59,7 +58,7 @@ class _AddSellItemState extends State<AddSellItem> {
               SizedBox(height: getUiHeight(20)),
               FormBuilder(
                 key: _formKey,
-                child: SellItemForm(),
+                child: StoreItemForm(),
               ),
               SizedBox(height: getUiHeight(20)),
               Container(
