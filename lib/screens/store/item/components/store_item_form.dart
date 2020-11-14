@@ -1,11 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:sell_or_swap/models/category.dart';
 import 'package:sell_or_swap/size_config.dart';
 
 class StoreItemForm extends StatelessWidget {
+  final List<ItemCategory> categories;
+
+  const StoreItemForm({Key key, this.categories}) : super(key: key);
   Widget build(BuildContext context) {
     return Column(
       children: [
+        categories == null || categories.length == 0
+            ? Container()
+            : FormBuilderDropdown(
+                attribute: 'category_id',
+                valueTransformer: (value) => value.toString(),
+                items: categories
+                    .map((e) => DropdownMenuItem(
+                          child: Text(e.name),
+                          value: e.id.toString(),
+                        ))
+                    .toList(),
+              ),
+        SizedBox(height: getUiHeight(20)),
         FormBuilderTextField(
           attribute: 'name',
           decoration: InputDecoration(
@@ -38,22 +55,10 @@ class StoreItemForm extends StatelessWidget {
             hintText: "Enter your price",
             floatingLabelBehavior: FloatingLabelBehavior.always,
           ),
+          valueTransformer: (value) => value.toString(),
           validators: [
             FormBuilderValidators.required(),
             FormBuilderValidators.min(1),
-          ],
-        ),
-        SizedBox(height: getUiHeight(20)),
-        FormBuilderTextField(
-          attribute: 'contact',
-          decoration: InputDecoration(
-            labelText: "Contact",
-            hintText: "Enter your contact",
-            floatingLabelBehavior: FloatingLabelBehavior.always,
-          ),
-          validators: [
-            FormBuilderValidators.required(),
-            FormBuilderValidators.minLength(10),
           ],
         ),
         SizedBox(height: getUiHeight(20)),

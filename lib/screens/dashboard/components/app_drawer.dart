@@ -5,8 +5,10 @@ import 'package:sell_or_swap/providers/auth_provider.dart';
 import 'package:sell_or_swap/screens/create_store/picklocation/pickup_address.dart';
 import 'package:sell_or_swap/bloc/token_auth.dart';
 import 'package:sell_or_swap/components/cache_image.dart';
-import 'package:sell_or_swap/screens/stores_map/stores_map_screen.dart';
+import 'package:sell_or_swap/screens/profile/profile_screen.dart';
 import 'package:sell_or_swap/screens/store/store/store_screen.dart';
+import 'package:sell_or_swap/screens/view_stores/view_stores_screen.dart';
+import 'package:share/share.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({
@@ -35,7 +37,7 @@ class AppDrawer extends StatelessWidget {
                   "Start Sell",
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                trailing: Icon(Icons.exit_to_app),
+                trailing: Icon(Icons.shopping_basket),
                 onTap: () {
                   Navigator.pop(context);
                   if (value.user.store == null) {
@@ -50,10 +52,10 @@ class AppDrawer extends StatelessWidget {
                   "View Stores",
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                trailing: Icon(Icons.exit_to_app),
+                trailing: Icon(Icons.store),
                 onTap: () {
                   Navigator.pop(context);
-                  Get.to(StoresMapScreen());
+                  Get.to(ViewStoresScreen());
                 },
               ),
               ListTile(
@@ -61,7 +63,7 @@ class AppDrawer extends StatelessWidget {
                   "My Swaps",
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                trailing: Icon(Icons.exit_to_app),
+                trailing: Icon(Icons.swap_horiz),
                 onTap: () {
                   Navigator.pop(context);
                 },
@@ -71,9 +73,14 @@ class AppDrawer extends StatelessWidget {
                   "Messages",
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                trailing: Icon(Icons.exit_to_app),
+                trailing: Icon(Icons.messenger),
                 onTap: () {
                   Navigator.pop(context);
+                  Navigator.pushNamed(
+                    context,
+                    '/chathome',
+                    arguments: value.user.store,
+                  );
                 },
               ),
               ListTile(
@@ -81,9 +88,10 @@ class AppDrawer extends StatelessWidget {
                   "Profile",
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                trailing: Icon(Icons.exit_to_app),
+                trailing: Icon(Icons.supervised_user_circle),
                 onTap: () {
                   Navigator.pop(context);
+                  Get.to(ProfileScreen());
                 },
               ),
               ListTile(
@@ -91,9 +99,9 @@ class AppDrawer extends StatelessWidget {
                   "Share App",
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                trailing: Icon(Icons.exit_to_app),
+                trailing: Icon(Icons.share),
                 onTap: () {
-                  Navigator.pop(context);
+                  Share.share('check out my application palystore link here');
                 },
               ),
               ListTile(

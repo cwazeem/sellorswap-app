@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:get/get.dart';
 import 'package:sell_or_swap/bloc/token_auth.dart';
 import 'package:loading_animations/loading_animations.dart';
 import 'package:sell_or_swap/models/item.dart';
 import 'package:sell_or_swap/repository/store_repository.dart';
 import 'package:sell_or_swap/components/item_title.dart';
+import 'package:sell_or_swap/screens/store/item/store_item_edit.dart';
 
 // ignore: must_be_immutable
 class StoreItemIndex extends StatelessWidget {
@@ -28,9 +30,15 @@ class StoreItemIndex extends StatelessWidget {
                   crossAxisCount: 2,
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 10,
+                  childAspectRatio: 0.95,
                 ),
                 itemBuilder: (context, index) {
-                  return ItemTile(item: snapshot.data[index]);
+                  return ItemTile(
+                    item: snapshot.data[index],
+                    ontap: () => Get.to(
+                      StoreItemEditScreen(item: snapshot.data[index]),
+                    ),
+                  );
                 },
               );
             }

@@ -1,10 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:sell_or_swap/components/circle_menu_button.dart';
+import 'package:sell_or_swap/constants.dart';
 import 'package:sell_or_swap/models/item.dart';
 import 'package:sell_or_swap/models/store.dart';
 import 'package:sell_or_swap/size_config.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:get/get.dart';
 
 class BuyerShowItemScreen extends StatelessWidget {
   final Item item;
@@ -30,7 +32,7 @@ class BuyerShowItemScreen extends StatelessWidget {
             child: Container(
               margin: EdgeInsets.only(top: SizeConfig.screenHeight * .22),
               decoration: BoxDecoration(
-                color: Colors.blue,
+                color: kPrimaryColor,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(getUiWidth(25)),
                 ),
@@ -64,7 +66,7 @@ class BuyerShowItemScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Cozy Crib",
+                    "${item.name}",
                     style: Theme.of(context).textTheme.headline4.copyWith(
                         fontWeight: FontWeight.bold, color: Colors.black),
                   ),
@@ -73,10 +75,7 @@ class BuyerShowItemScreen extends StatelessWidget {
                     height: SizeConfig.screenHeight * .50,
                     child: SingleChildScrollView(
                       child: Text(
-                        '''Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.''' +
-                            '''Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.''' +
-                            '''Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.''' +
-                            '''Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.''',
+                        item.description,
                         style: Theme.of(context).textTheme.bodyText2.copyWith(),
                         textAlign: TextAlign.justify,
                       ),
@@ -113,7 +112,15 @@ class BuyerShowItemScreen extends StatelessWidget {
           CircleMenuButton(
             icon: Icons.directions,
             title: "Direction",
-            onTap: () {},
+            onTap: () async {
+              String googleUrl =
+                  'https://www.google.com/maps/search/?api=1&query=${store.location.coordinates[1]},${store.location.coordinates[0]}';
+              if (await canLaunch(googleUrl)) {
+                await launch(googleUrl);
+              } else {
+                Get.snackbar('Error!', 'Could not open the map.');
+              }
+            },
           )
         ],
       ),

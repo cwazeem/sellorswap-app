@@ -1,17 +1,17 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:sell_or_swap/constants.dart';
-import 'package:sell_or_swap/models/item.dart';
+import 'package:sell_or_swap/models/store.dart';
 import 'package:sell_or_swap/size_config.dart';
 
-class ItemTile extends StatelessWidget {
-  const ItemTile({
+class StoreTile extends StatelessWidget {
+  const StoreTile({
     Key key,
     this.ontap,
     @required this.item,
   }) : super(key: key);
 
-  final Item item;
+  final Store item;
   final Function ontap;
 
   @override
@@ -31,9 +31,36 @@ class ItemTile extends StatelessWidget {
                 topLeft: Radius.circular(getUiWidth(15)),
                 topRight: Radius.circular(getUiWidth(15)),
               ),
-              child: CachedNetworkImage(
-                imageUrl: item.image,
-                fit: BoxFit.contain,
+              child: Stack(
+                children: [
+                  CachedNetworkImage(
+                    imageUrl: item.logo,
+                    fit: BoxFit.contain,
+                  ),
+                  item.topSeller == 1
+                      ? Positioned(
+                          top: 0,
+                          right: 10,
+                          child: Container(
+                            height: getUiHeight(28),
+                            padding: EdgeInsets.all(getUiWidth(5)),
+                            decoration: BoxDecoration(
+                              color: kPrimaryColor,
+                              borderRadius: BorderRadius.only(
+                                bottomRight: Radius.circular(getUiWidth(5)),
+                                bottomLeft: Radius.circular(getUiWidth(5)),
+                              ),
+                            ),
+                            child: Center(
+                              child: Text(
+                                "Top-Seller",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        )
+                      : Container()
+                ],
               ),
             ),
             SizedBox(height: 5),
@@ -49,36 +76,15 @@ class ItemTile extends StatelessWidget {
                       borderRadius: BorderRadius.all(Radius.circular(5)),
                     ),
                     child: Text(
-                      "${item.category.name}",
+                      "${item.name}",
                       style: TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.white),
                     ),
                   ),
                   Text(
-                    "${item.name}",
-                    maxLines: 1,
+                    "${item.address}",
+                    maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    "${item.description}",
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  RichText(
-                    text: TextSpan(
-                      text: "\$",
-                      style: TextStyle(color: kPrimaryColor, fontSize: 18),
-                      children: [
-                        TextSpan(
-                          text: "${item.price}",
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
                   )
                 ],
               ),

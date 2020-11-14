@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:loading_animations/loading_animations.dart';
 import 'package:sell_or_swap/components/default_button.dart';
 import 'package:sell_or_swap/components/loadin_modal.dart';
 import 'package:sell_or_swap/constants.dart';
@@ -29,7 +30,7 @@ class _StoreItemEditScreenState extends State<StoreItemEditScreen> {
   File _image;
   final picker = ImagePicker();
 
-  bool loading = true;
+  bool loading = false;
 
   // CategoryRepository
   CategoryRepository _repository;
@@ -39,32 +40,32 @@ class _StoreItemEditScreenState extends State<StoreItemEditScreen> {
     super.initState();
   }
 
-  Future<List<ItemCategory>> getCategories() async {
-    List<ItemCategory> _list = await _repository.getCategories();
-    if (mounted) {
-      setState(() {
-        loading = false;
-      });
-    }
-    return _list;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text("Add Item"),
+        title: Text("Edit Item"),
       ),
-      body: SingleChildScrollView(
-        child: LoadingModal(
-          loading: loading,
+      body: LoadingModal(
+        loading: loading,
+        child: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
           child: FutureBuilder(
-            future: getCategories(),
+            future: _repository.getCategories(),
             builder: (context, snapshot) {
               if (snapshot.hasData) return buildEditForm(snapshot.data);
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text("${snapshot.error}"),
+                );
+              }
               return Center(
-                child: Text("CATEGORIES"),
+                child: LoadingBouncingGrid.circle(
+                  borderColor: Colors.cyan,
+                  backgroundColor: Colors.cyan,
+                  size: 50.0,
+                ),
               );
             },
           ),
@@ -75,33 +76,17 @@ class _StoreItemEditScreenState extends State<StoreItemEditScreen> {
 
   Padding buildEditForm(List<ItemCategory> _categories) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: getUiWidth(20)),
+      padding: EdgeInsets.symmetric(horizontal: getUiWidth(20), vertical: 15),
       child: Column(
         children: [
-          SizedBox(height: getUiHeight(10)),
-          Center(
-            child: Text(
-              "${widget.item.name}",
-              style: TextStyle(
-                color: kPrimaryColor,
-                fontSize: getUiWidth(28),
-                fontWeight: FontWeight.bold,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ),
-          Center(
-            child: Text(
-              "You are inserted item in the this category",
-              textAlign: TextAlign.center,
-            ),
-          ),
-          SizedBox(height: getUiHeight(20)),
           FormBuilder(
             key: _formKey,
-            child: StoreItemForm(),
+            initialValue: widget.item.toFormData(),
+            child: StoreItemForm(
+              categories: _categories,
+            ),
           ),
-          SizedBox(height: getUiHeight(20)),
+          SizedBox(height: getUiHeight(10)),
           Container(
             height: getUiHeight(200),
             decoration: BoxDecoration(
@@ -126,32 +111,40 @@ class _StoreItemEditScreenState extends State<StoreItemEditScreen> {
                     ),
             ),
           ),
-          SizedBox(height: getUiHeight(20)),
+          SizedBox(height: getUiHeight(10)),
           DefaultButton(
             text: "Continue",
             press: () async {
               try {
                 if (_formKey.currentState.saveAndValidate()) {
-                  var data = _formKey.currentState.value;
-                  String url = await RestApi().uploadImage(_image);
-                  data['image'] = url;
-                  data['category_id'] = widget.item.id.toString();
+                  setState(() {
+                    loading = true;
+                  });
+                  var _data = _formKey.currentState.value;
+                  if (_image != null) {
+                    String url = await RestApi().uploadImage(_image);
+                    _data['image'] = url;
+                  }
                   String storeId = Auth().currentUser.store.id.toString();
-                  Map response =
-                      await RestApi().post("/store/$storeId/item", data);
+                  Map response = await RestApi()
+                      .put("/store/$storeId/item/${widget.item.id}", _data);
                   if (response.containsKey('status') && response['status']) {
                     Get.snackbar(
                       'Success',
-                      'Item added successfully',
+                      'Item updated successfully',
                       snackPosition: SnackPosition.BOTTOM,
                     );
                     setState(() {
-                      _formKey.currentState.reset();
-                      _image = null;
+                      loading = false;
                     });
+                    await Future.delayed(Duration(seconds: 1));
+                    Navigator.pop(context);
                   }
                 }
               } catch (e) {
+                setState(() {
+                  loading = false;
+                });
                 Get.snackbar(
                   'Error!',
                   "$e",

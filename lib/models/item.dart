@@ -65,6 +65,16 @@ class Item {
     }
     return data;
   }
+
+  Map<String, String> toFormData() {
+    final Map<String, String> data = new Map<String, String>();
+    data['category_id'] = this.categoryId.toString();
+    data['name'] = this.name;
+    data['description'] = this.description;
+    data['price'] = this.price.toString();
+    data['condition'] = this.condition;
+    return data;
+  }
 }
 
 class Category {

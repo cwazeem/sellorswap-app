@@ -35,9 +35,20 @@ class SellerShopScreen extends StatelessWidget {
                         ),
                       ),
                       SizedBox(width: getUiWidth(20)),
-                      Text(
-                        store.name ?? "",
-                        style: Theme.of(context).textTheme.headline4,
+                      FittedBox(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              store.name ?? "",
+                              style: Theme.of(context).textTheme.headline5,
+                            ),
+                            Text(
+                              store.address ?? "",
+                              style: Theme.of(context).textTheme.bodyText1,
+                            ),
+                          ],
+                        ),
                       )
                     ],
                   ),

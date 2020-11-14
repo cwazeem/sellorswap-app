@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:sell_or_swap/components/option_menu_button.dart';
-import 'package:sell_or_swap/screens/stores_map/stores_map_screen.dart';
+import 'package:sell_or_swap/screens/view_stores/view_stores_screen.dart';
 import 'package:sell_or_swap/size_config.dart';
 
 class SellOrFindSeller extends StatelessWidget {
@@ -33,7 +34,7 @@ class SellOrFindSeller extends StatelessWidget {
               title: "Find Seller",
               onTap: () {
                 Navigator.pop(context);
-                Navigator.pushNamed(context, StoresMapScreen.name);
+                Get.to(ViewStoresScreen());
               },
             ),
           ],

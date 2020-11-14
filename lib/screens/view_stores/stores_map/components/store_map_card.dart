@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sell_or_swap/constants.dart';
@@ -5,16 +7,19 @@ import 'package:sell_or_swap/models/store.dart';
 import 'package:sell_or_swap/size_config.dart';
 
 class StoreMapCard extends StatelessWidget {
-  final GoogleMapController controller;
+  final Completer<GoogleMapController> controller;
   final Store store;
 
-  const StoreMapCard({Key key, this.controller, this.store}) : super(key: key);
+  StoreMapCard({Key key, this.controller, this.store}) : super(key: key);
+
+  GoogleMapController _controller;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        controller.animateCamera(
+        _controller = await controller.future;
+        _controller.animateCamera(
           CameraUpdate.newCameraPosition(
             CameraPosition(
               bearing: 270.0,
